@@ -12,7 +12,7 @@ import DetailData from "./pages/home/detailData";
 
 export default function App(props) {
 
-    
+    // TEST
   useEffect(()=>{
     document.title = "Standarisasi Selulosa"
   },[])
