@@ -17,8 +17,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div style={{ padding: 30, display: 'flex',justifyContent: 'center',alignItems:'center',height:'100vh'}}>
-      <Paper sx={{ padding: '30px' }}>
+    <div style={{ display: 'flex',justifyContent: 'center',alignItems:'center',height:'100vh'}}>
+      <Paper sx={{ padding: {xs: '10px', md: '50px'} }}>
         <Grid
           container
           spacing={3}

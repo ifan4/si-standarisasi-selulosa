@@ -78,19 +78,24 @@ export default function AddDataStandar(){
                         />
                     </FormControl>
                 </Grid>
-                <Grid md={6}>
-                    <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                        <InputLabel htmlFor="standard-adornment-amount">Deskripsi Singkat</InputLabel>
-                        <Input
-                            
-                        />
-                    </FormControl>
-                </Grid>
+                
                 <Grid md={6}>
                     <FormControl fullWidth sx={{ m: 1 }} variant="standard">
                         <FormLabel id="demo-row-radio-buttons-group-label">Dokumen</FormLabel>
                         <Input hidden accept="image/*" multiple type="file" />
                         
+                    </FormControl>
+                </Grid>
+                <Grid md={6}>
+                    <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                        <TextField
+                        id="filled-textarea"
+                        label="Deskripsi Singkat"
+                        placeholder="Placeholder"
+                        multiline
+                        rows={4}
+                        variant="filled"
+                        />
                     </FormControl>
                 </Grid>
                 <Grid md={6}>

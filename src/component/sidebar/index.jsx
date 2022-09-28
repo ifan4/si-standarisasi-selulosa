@@ -21,7 +21,7 @@ const root = ReactDOM.createRoot(
     document.getElementById('root')
   );
 
-export default function Index({drawerWidth,handleDrawerToggle,mobileOpen}){
+export default function Index({drawerWidth,handleDrawerToggle,mobileOpen,role='Admin'}){
     const [onHighlight, setOnHighlight] = useState('Dashboard')
 
     const drawer = (
@@ -51,19 +51,36 @@ export default function Index({drawerWidth,handleDrawerToggle,mobileOpen}){
                 {
                     label: 'Dashboard',
                     icon: <DashboardIcon/>,
-                    link: '/admin'
+                    link: '/admin',
+                    role: 'Admin'
                 }, 
                 {
                     label: 'Data Standar',
                     icon: <TableChartIcon/>,
-                    link: '/admin/dataStandar'
+                    link: '/admin/dataStandar',
+                    role: 'Admin'
                 },
                 {
                   label: 'Users Management',
                   icon: <ManageAccountsIcon/>,
-                  link: '/admin/usersManagement'
+                  link: '/admin/usersManagement',
+                  role: 'Admin'
+                },
+                // ===============
+                {
+                  label: 'Dashboard',
+                  icon: <DashboardIcon/>,
+                  link: '/validator',
+                  role: 'Validator'
+                },
+                {
+                  label: 'Data Validate Request',
+                  icon: <TableChartIcon/>,
+                  link: '/validator/Datavalidate-request',
+                  role: 'Validator'
                 }
               ].map((text, index) => {
+                    if (text.role === role)
                     return(
                         (
                             <Link to={text.link} style={{ textDecoration: 'none', color:'inherit' }}>

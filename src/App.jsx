@@ -9,6 +9,9 @@ import AddUsers from "./pages/admin/usersManagement/addUser";
 import Home from "./pages/home";
 import LoginPage from "./pages/authenication/login";
 import DetailData from "./pages/home/detailData";
+import Validator from './pages/validator'
+import DataValidateRequest from './pages/validator/dataValidate'
+
 
 export default function App(props) {
 
@@ -35,6 +38,10 @@ export default function App(props) {
         </Route>
       </Route>
 
+      <Route path="/validator">
+        <Route index element={<Validator/>}/>
+        <Route path="dataValidate-request" element={<DataValidateRequest/>} />
+      </Route>
       <Route path="/authentication">
         <Route path="login" element={<LoginPage/>}/>
       </Route>

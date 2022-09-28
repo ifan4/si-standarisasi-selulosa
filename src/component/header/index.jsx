@@ -11,7 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 const drawerWidth = 240;
 
-export default function Index({handleDrawerToggle,title}) {
+export default function Index({handleDrawerToggle,title,role}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -68,7 +68,7 @@ export default function Index({handleDrawerToggle,title}) {
                 fontSize: '10px',
                 fontStyle: 'oblique'
               }}>
-                admin
+                {role}
               </Typography>
 
             </Button>
@@ -81,8 +81,8 @@ export default function Index({handleDrawerToggle,title}) {
                 'aria-labelledby': 'basic-button',
               }}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+              <MenuItem onClick={handleClose} sx={{ paddingX: '30px' }}>Profile</MenuItem>
+              <MenuItem onClick={handleClose} sx={{ paddingX: '30px' }}>Logout</MenuItem>
             </Menu>
           </div>
         </Toolbar>

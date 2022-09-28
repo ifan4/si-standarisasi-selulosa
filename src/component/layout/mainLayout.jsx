@@ -6,7 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Header from '../header'
 
 const drawerWidth = 240;
-export default function Layout({children,title}) {
+export default function Layout({children,title,role='Admin'}) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
 
@@ -24,12 +24,14 @@ export default function Layout({children,title}) {
       drawerWidth={drawerWidth}
       handleDrawerToggle={handleDrawerToggle} 
       title={title}
+      role={role}
       />
 
       <Sidebar
       drawerWidth={drawerWidth}
       handleDrawerToggle={handleDrawerToggle} 
       mobileOpen={mobileOpen}
+      role={role}
       />
       
       <Box
