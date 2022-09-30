@@ -2,6 +2,8 @@ import Layout from "../../../component/layout/mainLayout";
 import MUIDataTable from "mui-datatables";
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { request } from "../../../utils/axios-utils";
 
 
 const columns = [
@@ -56,6 +58,10 @@ const data = [
 
 
 export default function DataStandar(){
+    const [data,setData] = useState([])
+    
+    console.log('state data');
+    console.log(data);
     const navigate = useNavigate()
 
     const options = {
@@ -72,6 +78,36 @@ export default function DataStandar(){
         selectableRows: false, // <===== will turn off 
         onRowsDelete:(e)=>{console.log(e.data)},
     };
+
+    useEffect(()=>{
+        getData()
+    },[])
+    const getData = async()=>{
+        try {
+            const res = await request({
+                url: '/admin/users',
+                method: 'GET'
+            })
+
+            console.log('berhasil');
+            console.log(res.data.data);
+
+            setData(
+                res.data.data.map((item)=>{
+                    return[
+                        item.name,
+                        item.role,
+                        item.created_at,
+                        item.email,
+                    ]
+                })
+            )
+            
+        } catch (error) {
+            console.log('Gagal');
+            console.log(error);
+        }
+    }
 
     return(
         <Layout title={'Users Management'}>

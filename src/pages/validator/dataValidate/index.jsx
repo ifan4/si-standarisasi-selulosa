@@ -3,6 +3,8 @@ import MUIDataTable from "mui-datatables";
 import Button from '@mui/material/Button';
 import { Link, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
+import { useEffect, useState } from "react";
+import { request } from "../../../utils/axios-utils";
 
 const columns = [
     {
@@ -28,12 +30,12 @@ const columns = [
             filter: true,
         }
     }, 
-    {
-        name: "City",
-        options: {
-            filter: false
-        }
-    }, 
+    // {
+    //     name: "City",
+    //     options: {
+    //         filter: false
+    //     }
+    // }, 
     {
         name: "Kategori",
         options: {
@@ -153,11 +155,40 @@ const data = [
 
 
 export default function DataStandar(){
+  const [data,setData] = useState([])
     const navigate = useNavigate()
 
     const options = {
         selectableRows: false, // <===== will turn off 
     };
+    
+    useEffect(()=>{
+      getData()
+    },[])
+
+    const getData = async()=>{
+      try {
+          const res = await request({
+              url: '/public',
+              method: 'GET'
+          })
+          console.log(res);
+          setData(
+              res.data.data.map((item)=>{
+                  return[
+                      item.standar,
+                      item.judul,
+                      item.kategori,
+                      item.tahun,
+                      item.status,
+                      item.deskripsi
+                  ]
+              })
+          )
+      } catch (error) {
+          console.log(error);
+      }
+  }
 
     return(
         <Layout 

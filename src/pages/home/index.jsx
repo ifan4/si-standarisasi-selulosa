@@ -3,6 +3,8 @@ import { Typography,Divider,InputLabel,Input,Container,Button,Select,MenuItem,Fo
 import Grid from '@mui/material/Unstable_Grid2';
 import MUIDataTable from "mui-datatables";
 import { useNavigate,Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { request } from '../../utils/axios-utils';
 
 const columns = [
     {
@@ -11,9 +13,9 @@ const columns = [
     {
         name: "Judul",
     }, 
-    {
-        name: "City",
-    }, 
+    // {
+    //     name: "City",
+    // }, 
     {
         name: "Kategori",
     }, 
@@ -22,20 +24,30 @@ const columns = [
     }, 
     {
         name: "Status",
+        options: {
+            filter: false,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                if (value == 1){
+                    return "Has Validated"
+                }
+                else
+                return "Hasn't Validate"
+            }
+        }
     }, 
-    {
-        name: "Baca",
-    }, 
-    {
-        name: "Validasi",
-    }, 
+    // {
+    //     name: "Baca",
+    // }, 
+    // {
+    //     name: "Validasi",
+    // }, 
     {
         name: "Action",
         options: {
             filter: false,
             customBodyRender: (value, tableMeta, updateValue) => {
                 return (
-                <Link to={'/detailData'} style={{ textDecoration: 'none' }}>
+                <Link to={`/detailData?id=${value}`} style={{ textDecoration: 'none' }}>
                     <Button variant='outlined' size='small'>Detail</Button>
                 </Link>
                 );
@@ -62,7 +74,9 @@ const data = [
 ];
 
 export default function Home(){
-
+    const [data,setData] = useState([])
+    console.log('state data');
+    console.log(data);
     const navigate = useNavigate()
 
     const options = {
@@ -72,6 +86,39 @@ export default function Home(){
         print: false,
         viewcolumn: false
     };
+
+    const getData = async()=>{
+        try {
+            const res = await request({
+                url: '/public',
+                method: 'GET'
+            },false)
+
+            console.log('berhasil');
+            console.log(res.data.data);
+
+            setData(
+                res.data.data.map((item)=>{
+                    return[
+                        item.standar,
+                        item.judul,
+                        item.kategori,
+                        item.tahun,
+                        item.validasi_status,
+                        item.id
+                    ]
+                })
+            )
+            
+        } catch (error) {
+            console.log('Gagal');
+            console.log(error);
+        }
+    }
+
+    useEffect(()=>{
+        getData()
+    },[])
 
     return(
         <>

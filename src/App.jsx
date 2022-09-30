@@ -11,6 +11,7 @@ import LoginPage from "./pages/authenication/login";
 import DetailData from "./pages/home/detailData";
 import Validator from './pages/validator'
 import DataValidateRequest from './pages/validator/dataValidate'
+import EditDataStandar from './pages/admin/dataStandar/editData'
 
 
 export default function App(props) {
@@ -31,6 +32,7 @@ export default function App(props) {
         <Route path="dataStandar">
           <Route index element={<DataStandar/>}/>
           <Route path="add" element={<AddDataStandar/>}/>
+          <Route path="edit" element={<EditDataStandar/>} />
         </Route>
         <Route path="usersManagement">
           <Route index element={<UsersManagement/>}/>

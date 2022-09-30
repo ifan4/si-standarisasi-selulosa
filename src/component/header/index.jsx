@@ -7,11 +7,16 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { request } from '../../utils/axios-utils';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 
 const drawerWidth = 240;
 
 export default function Index({handleDrawerToggle,title,role}) {
+  const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -20,6 +25,13 @@ export default function Index({handleDrawerToggle,title,role}) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const logoutHandler = async()=>{
+    console.log(Cookies.get('accessToken'));
+    console.log('Berhasil LOGOUT');
+    Cookies.remove('accessToken')
+    navigate('/')
+  }
 
     return(
         <AppBar
@@ -82,7 +94,7 @@ export default function Index({handleDrawerToggle,title,role}) {
               }}
             >
               <MenuItem onClick={handleClose} sx={{ paddingX: '30px' }}>Profile</MenuItem>
-              <MenuItem onClick={handleClose} sx={{ paddingX: '30px' }}>Logout</MenuItem>
+              <MenuItem onClick={logoutHandler} sx={{ paddingX: '30px' }}>Logout</MenuItem>
             </Menu>
           </div>
         </Toolbar>

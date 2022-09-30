@@ -2,6 +2,11 @@ import Layout from "../../../component/layout/mainLayout";
 import MUIDataTable from "mui-datatables";
 import Button from '@mui/material/Button';
 import { Link, useNavigate } from "react-router-dom";
+import { request } from "../../../utils/axios-utils";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import axios from "axios";
+import Swal from 'sweetalert2'
 
 const columns = [
     {
@@ -16,12 +21,12 @@ const columns = [
             filter: true,
         }
     }, 
-    {
-        name: "City",
-        options: {
-            filter: false
-        }
-    }, 
+    // {
+    //     name: "City",
+    //     options: {
+    //         filter: false
+    //     }
+    // }, 
     {
         name: "Kategori",
         options: {
@@ -61,8 +66,44 @@ const columns = [
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
               <>
-              <Button variant="contained" color="error" size="small" sx={{ margin: '2px' }}>Delete</Button>
-              <Button variant="outlined" size="small" sx={{ margin: '2px' }}>Edit</Button>
+                <Button 
+              variant="outlined" 
+              color="error" 
+              size="small" 
+              sx={{ margin: '2px' }}
+              onClick={()=>{
+                Swal.fire({
+                    title: 'Are you sure want to delete this data?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Delete',
+                    reverseButtons: true
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      Swal.fire(
+                        'Deleted!',
+                        'The data has been deleted.',
+                        'success'
+                      )
+                    }
+                  })
+              }}
+              >
+                Delete
+            </Button>
+              <Button 
+              variant="contained" 
+              color="success" 
+              size="small" 
+              sx={{ margin: '2px' }}
+              onClick={()=>{
+                
+              }}
+              >
+                Edit
+            </Button>
               </>
             );
           }
@@ -89,7 +130,36 @@ const data = [
 
 
 export default function DataStandar(){
+    const [data,setData] = useState([])
     const navigate = useNavigate()
+
+    useEffect(()=>{
+        getData()
+    },[])
+
+    const getData = async()=>{
+        try {
+            const res = await request({
+                url: '/public',
+                method: 'GET',
+            },false)
+            console.log(res);
+            setData(
+                res.data.data.map((item)=>{
+                    return[
+                        item.standar,
+                        item.judul,
+                        item.kategori,
+                        item.tahun,
+                        item.status,
+                        item.deskripsi
+                    ]
+                })
+            )
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const options = {
         customToolbar: () => {
