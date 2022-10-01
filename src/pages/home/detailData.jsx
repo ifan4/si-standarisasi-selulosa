@@ -10,15 +10,33 @@ export default function Detail(){
     const [state,setState] = useState({
         standar: '',
         judul: '',
-        desc: ''
+        desc: '',
+        link: ''
     })
-    console.log('ini state');
-    console.log(state);
+    const [role,setRole] = useState('public')
+
     const navigate = useNavigate()
 
     useEffect(()=>{
-        getData()
+        checkRole()
     },[])
+
+    const checkRole = async ()=>{
+        try {
+            const res = await request({
+                url: '/profile',
+                method: 'get'
+            })
+            
+            setRole('user')
+            return getDataAuth()
+        } catch (error) {
+            return getDataPublic()
+            
+        }
+    }
+
+
 
 
     const [searchParams] = useSearchParams();
@@ -27,7 +45,7 @@ export default function Detail(){
     },[])
 
 
-    const getData = async()=>{
+    const getDataPublic = async()=>{
         try {
             const res = await request({
                 url: '/public/'+searchParams.get('id'),
@@ -39,9 +57,31 @@ export default function Detail(){
 
             setState(
                 {
+                    ...state,
                     standar: res.data.data[0].standar,
                     judul: res.data.data[0].judul,
-                    dedsc: res.data.data[0].deskripsi
+                    desc: res.data.data[0].deskripsi
+                }
+            )
+            
+        } catch (error) {
+            console.log('Gagal');
+            console.log(error);
+        }
+    }
+    const getDataAuth = async()=>{
+        try {
+            const res = await request({
+                url: '/user/'+searchParams.get('id'),
+                method: 'GET'
+            })
+
+            setState(
+                {
+                    standar: res.data.data[0].standar,
+                    judul: res.data.data[0].judul,
+                    desc: res.data.data[0].deskripsi,
+                    link: res.data.data[0].link
                 }
             )
             
@@ -73,7 +113,14 @@ export default function Detail(){
                 <p>
                     SNI dapat dimiliki dengan membeli di <a href="#">Link Pesta BSN atau  SISPK SNI</a>
                 </p>
-                <Button onClick={()=>navigate('/')}>{'< Kembali'}</Button>
+                {
+                    role == 'user' &&
+                    <a target={'_blank'} href={`https://sisis.ifandri.com/${state.link}`} style={{ display: 'block',textDecoration: 'none' }}>
+                        <Button variant='contained'>Lihat File</Button>
+                    </a>
+                }
+                <Button onClick={()=>navigate('../')}>{'< Kembali'}</Button>
+
             </Typography>
         </>
     )

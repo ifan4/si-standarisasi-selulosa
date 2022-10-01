@@ -11,6 +11,7 @@ import { request } from '../../utils/axios-utils';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import { convertRole } from '../../helper';
 
 
 const drawerWidth = 240;
@@ -18,6 +19,10 @@ const drawerWidth = 240;
 export default function Index({handleDrawerToggle,title,role}) {
   const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState(null);
+  const [profile,setProfile] = useState({
+    name: '',
+    role: ''
+  })
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -26,11 +31,32 @@ export default function Index({handleDrawerToggle,title,role}) {
     setAnchorEl(null);
   };
 
+  useEffect(()=>{
+    getProfile()
+  },[])
+
   const logoutHandler = async()=>{
     console.log(Cookies.get('accessToken'));
     console.log('Berhasil LOGOUT');
     Cookies.remove('accessToken')
     navigate('/')
+  }
+
+  const getProfile = async ()=>{
+    try {
+      const res = await request({
+        url: '/profile',
+        method: 'get'
+      })
+      console.log('res.data profile');
+      console.log(res.data);
+      setProfile({
+        name: res.data.name,
+        role: convertRole(res.data.role)
+      })
+    } catch (error) {
+      
+    }
   }
 
     return(
@@ -73,14 +99,14 @@ export default function Index({handleDrawerToggle,title,role}) {
               alignItems: 'end'
             }}
             >
-              <div>James Alexander</div>
+              <div>{profile.name}</div>
               <Typography 
               sx={{ 
                 display:'block',
                 fontSize: '10px',
                 fontStyle: 'oblique'
               }}>
-                {role}
+                {profile.role}
               </Typography>
 
             </Button>

@@ -23,15 +23,15 @@ const columns = [
         name: "Tahun",
     }, 
     {
-        name: "Status",
+        name: "Status Berlaku",
         options: {
             filter: false,
             customBodyRender: (value, tableMeta, updateValue) => {
                 if (value == 1){
-                    return "Has Validated"
+                    return "Yes"
                 }
                 else
-                return "Hasn't Validate"
+                return "No"
             }
         }
     }, 
@@ -77,7 +77,6 @@ export default function Home(){
     const [data,setData] = useState([])
     console.log('state data');
     console.log(data);
-    const navigate = useNavigate()
 
     const options = {
         selectableRows: false, // <===== will turn off 

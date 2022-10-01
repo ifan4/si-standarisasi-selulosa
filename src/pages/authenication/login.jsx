@@ -30,22 +30,20 @@ const LoginPage = () => {
     e.preventDefault()
  
       await axios({
-        url: `https://sisisapi.000webhostapp.com/api/login?email=${email}&password=${password}`,
+        url: `https://sisis.ifandri.com/api/login?email=${email}&password=${password}`,
         method: 'POST',
-        headers: {
-          'Accept': 'application/json'
-        }
+        
       })
       .then((res)=>{
         Cookies.set('accessToken', res.data.access_token)
         switch (res.data.role) {
-          case 1:
+          case '1':
             navigate('/admin')
             break;
-          case 2:
+          case '2':
             navigate('/')
             break;
-          case 3:
+          case '3':
             navigate('/validator')
             break;
           default:

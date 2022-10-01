@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import Swal from 'sweetalert2'
+import { Box } from "@mui/material";
+import { convertStatus, convertStatusToColor } from "../../../helper";
 
 const columns = [
     {
@@ -20,19 +22,13 @@ const columns = [
         options: {
             filter: true,
         }
-    }, 
-    // {
-    //     name: "City",
-    //     options: {
-    //         filter: false
-    //     }
-    // }, 
+    },
     {
         name: "Kategori",
         options: {
             filter: true,
         }
-    }, 
+    },
     {
         name: "Tahun",
         options: {
@@ -40,21 +36,54 @@ const columns = [
         }
     }, 
     {
-        name: "Status",
+        name: "Dokumen",
         options: {
             filter: false,
+            customBodyRender: (value)=>{
+                return(
+                    <a href={`https://sisis.ifandri.com/${value}`} target={'_blank'} style={{ textDecoration: 'none' }}>
+                        <Button variant="outlined">
+                            Baca
+                        </Button>
+                    </a>
+                )
+            }
         }
     }, 
     {
-        name: "Baca",
+        name: "Berlaku",
         options: {
             filter: false,
+            customBodyRender: (value)=>{
+                return(
+                    <>
+                        {value === '1' ? 'Yes' : "No"}
+                    </>
+                )
+            }
         }
     }, 
     {
         name: "Validasi",
         options: {
             filter: false,
+            customBodyRender: (value)=>{
+                return(
+                    <Box
+                    sx={{ 
+                        bgcolor: convertStatusToColor(value),
+                        color: 'white',
+                        padding: '5px',
+                        paddingX: '10px',
+                        textAlign: 'center',
+                        borderRadius: '3px',
+                        
+                     }}
+                    >
+                        {convertStatus(value)}
+                    </Box>
+                )
+            }
         }
     }, 
     {
@@ -62,16 +91,19 @@ const columns = [
         options: {
           filter: true,
           sort: false,
-          empty: true,
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
               <>
+                
                 <Button 
               variant="outlined" 
               color="error" 
               size="small" 
               sx={{ margin: '2px' }}
               onClick={()=>{
+                console.log('selectedRows');
+                updateValue(null)
+                console.log(value);
                 Swal.fire({
                     title: 'Are you sure want to delete this data?',
                     icon: 'warning',
@@ -82,28 +114,26 @@ const columns = [
                     reverseButtons: true
                   }).then((result) => {
                     if (result.isConfirmed) {
-                      Swal.fire(
-                        'Deleted!',
-                        'The data has been deleted.',
-                        'success'
-                      )
+                        deleteData(value.id,tableMeta.tableData,value.setData)
                     }
                   })
               }}
               >
-                Delete
+                Delete 
             </Button>
-              <Button 
-              variant="contained" 
-              color="success" 
-              size="small" 
-              sx={{ margin: '2px' }}
-              onClick={()=>{
-                
-              }}
-              >
-                Edit
-            </Button>
+            <Link to={'edit?id='+value.id} style={{ textDecoration: 'none' }}>
+                <Button 
+                variant="contained" 
+                color="success" 
+                size="small" 
+                sx={{ margin: '2px' }}
+                onClick={()=>{
+                   
+                }}
+                >
+                    Edit
+                </Button>
+            </Link>
               </>
             );
           }
@@ -111,20 +141,33 @@ const columns = [
       }
 ];
 
-const data = [
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
-];
+const deleteData = async (id,data,setData)=>{
+    try {
+        const res = await request({
+            url: '/admin/data/' + id,
+            method: 'POST'
+        })
+        let filteredData = data.filter((d)=> {
+            return d[7].id !== id && d;
+        })
+        console.log(filteredData);
+        setData(filteredData)
+        
+        return Swal.fire(
+            'Deleted!',
+            'The data has been deleted.',
+            'success'
+          )
+    } catch (error) {
+        console.log('error');
+        console.log(error);
+        return Swal.fire(
+            'Something Wrong!',
+            '',
+            'error'
+          )
+    }
+}
 
 
 
@@ -140,9 +183,9 @@ export default function DataStandar(){
     const getData = async()=>{
         try {
             const res = await request({
-                url: '/public',
+                url: '/admin',
                 method: 'GET',
-            },false)
+            })
             console.log(res);
             setData(
                 res.data.data.map((item)=>{
@@ -151,8 +194,14 @@ export default function DataStandar(){
                         item.judul,
                         item.kategori,
                         item.tahun,
+                        item.link,
                         item.status,
-                        item.deskripsi
+                        item.validasi_status,
+                        {
+                            id: item.id,
+                            data:data, 
+                            setData: setData
+                        },
                     ]
                 })
             )

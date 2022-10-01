@@ -11,97 +11,126 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import Button from '@mui/material/Button';
+import { useState } from "react";
+import { request } from "../../../utils/axios-utils";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import Button from '@mui/lab/LoadingButton';
 
 export default function AddDataStandar(){
+    const [state,setState] = useState({
+        name: '',
+        email: '',
+        password: '',
+        role: ''
+    })
+    const navigate = useNavigate()
+    const [isLoading,setIsLoading] = useState(false)
+    console.log('state nih');
+    console.log(state);
 
+    const onChangeHandler = (e)=>{
+        return setState({
+            ...state,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const onSubmitHandler = async (e)=>{
+        e.preventDefault()
+        setIsLoading(true)
+        try {
+            const res = await request({
+                url: '/admin/add_user',
+                method: 'POST',
+                data: state
+                
+            })
+            Swal.fire(
+                'Data Added!',
+                'You successfully added a data standard!',
+                'success'
+            )
+            navigate('../')
+        } catch (error) {
+            console.log(error);
+            Swal.fire(
+                'Something wrong!',
+                'Please check carefully your data',
+                'error'
+            )
+        }
+        finally{
+            setIsLoading(false)
+        }
+    }
 
     return(
-        <Layout title={"Users Management"}>
-            <Typography sx={{ marginBottom:'10px' }}>Add User</Typography>
-            <Grid container spacing={3} >
-                <Grid md={6}>
-                    <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                        <InputLabel htmlFor="standard-adornment-amount">Standar</InputLabel>
-                        <Input
-                            
-                        />
-                    </FormControl>
-                </Grid>
-                <Grid md={6}>
-                    <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                        <InputLabel htmlFor="standard-adornment-amount">Judul</InputLabel>
-                        <Input
-                            
-                        />
-                    </FormControl>
-                </Grid>
-                <Grid md={6}>
-                    <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                        <InputLabel id="demo-simple-select-label">Kategori</InputLabel>
-                        <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+        <Layout title={"Data Standar Management"}>
+            <Typography sx={{ marginBottom:'10px' }}>
+                Add User
+            </Typography>
+            <form onSubmit={onSubmitHandler}>
+                <Grid container spacing={3} >
+                    <Grid md={6}>
+                        <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                            <InputLabel htmlFor="standard-adornment-amount">Name</InputLabel>
+                            <Input
+                            required
+                            name="name"
+                            onChange={onChangeHandler}
+                            />
+                        </FormControl>
+                    </Grid>
+                    <Grid md={6}>
+                        <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                            <InputLabel htmlFor="standard-adornment-amount">Email</InputLabel>
+                            <Input
+                            required
+                            type="email"
+                            name="email"
+                            onChange={onChangeHandler}
+                            />
+                        </FormControl>
+                    </Grid>
+                    <Grid md={6}>
+                        <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                            <InputLabel id="demo-simple-select-label">Password</InputLabel>
+                            <Input
+                            required
+                            name="password"
+                            onChange={onChangeHandler}
+                            />
+                        </FormControl>
+                    </Grid>
+                    </Grid>
+                    <Grid md={6}>
+                        <FormControl fullWidth sx={{ m: 1 }} variant="standard">
+                            <FormLabel id="demo-row-radio-buttons-group-label">Role</FormLabel>
+                            <RadioGroup
+                            row
+                            aria-labelledby="demo-row-radio-buttons-group-label"
+                            name="role"
+                            onChange={onChangeHandler}
+                            >
+                                <FormControlLabel value="1" control={<Radio required/>} label="Admin" />
+                                <FormControlLabel value="2" control={<Radio required/>} label="User" />
+                                <FormControlLabel value="3" control={<Radio required/>} label="Validator" />
+                            </RadioGroup>
+                        </FormControl>
+                    </Grid>
+                
+                    <Grid md={12}>
+                        <Button variant="outlined" color="error" sx={{ marginRight: '5px' }}
+                        type={'reset'}
                         >
-                        <MenuItem value={10}>SNI Produk</MenuItem>
-                        <MenuItem value={20}>Cara Uji</MenuItem>
-                        <MenuItem value={30}>Ekolabel</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <Grid md={6}>
-                    <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                        <InputLabel htmlFor="standard-adornment-amount">Tahun</InputLabel>
-                        <Input
-                         type="number" min="1900" max="2099" step="1"
-                        />
-                    </FormControl>
-                </Grid>
-                <Grid md={6}>
-                    <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                        <FormLabel id="demo-row-radio-buttons-group-label">Status</FormLabel>
-                        <RadioGroup
-                        row
-                        aria-labelledby="demo-row-radio-buttons-group-label"
-                        name="row-radio-buttons-group"
-                        >
-                            <FormControlLabel value="female" control={<Radio />} label="Berlaku" />
-                            <FormControlLabel value="male" control={<Radio />} label="Tidak" />
-                    </RadioGroup>
-                    </FormControl>
-                </Grid>
-                <Grid md={6}>
-                    <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                        <InputLabel htmlFor="standard-adornment-amount">Link</InputLabel>
-                        <Input
-                            
-                        />
-                    </FormControl>
-                </Grid>
-                <Grid md={6}>
-                    <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                        <InputLabel htmlFor="standard-adornment-amount">Deskripsi Singkat</InputLabel>
-                        <Input
-                            
-                        />
-                    </FormControl>
-                </Grid>
-                <Grid md={6}>
-                    <FormControl fullWidth sx={{ m: 1 }} variant="standard">
-                        <FormLabel id="demo-row-radio-buttons-group-label">Dokumen</FormLabel>
-                        <Input hidden accept="image/*" multiple type="file" />
-                        
-                    </FormControl>
-                </Grid>
-                <Grid md={6}>
-                    <Button variant="outlined" color="error" sx={{ marginRight: '5px' }}>
-                        Reset
-                    </Button>
-                    <Button variant="contained">
-                        Submit
-                    </Button>
-                </Grid>
-            </Grid>
+                            Reset
+                        </Button>
+                        <Button loading={isLoading} variant="contained" type="submit">
+                            Submit
+                        </Button>
+                    </Grid>
+            </form>
         </Layout>
     )
 }

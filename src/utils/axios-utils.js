@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 
 
 const client = axios.create( {
-    baseURL: 'sisis.ifandri.com',
+    baseURL: 'https://sisis.ifandri.com/api',
 } )
 
 export const request = ( {...options},token=true ) => {

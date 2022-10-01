@@ -4,11 +4,19 @@ import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { request } from "../../../utils/axios-utils";
+import { convertDate, convertRole } from "../../../helper";
+import Swal from "sweetalert2";
 
 
 const columns = [
     {
         name: "Name",
+        options: {
+            filter: false,
+        }
+    }, 
+    {
+        name: "Email",
         options: {
             filter: false,
         }
@@ -26,22 +34,33 @@ const columns = [
         }
     }, 
     {
-        name: "Updated at",
-        options: {
-            filter: false,
-        }
-    }, 
-    {
         name: "Action",
         options: {
           filter: true,
           sort: false,
-          empty: true,
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
               <>
-              <Button variant="contained" color="error" size="small" sx={{ margin: '2px' }}>Delete</Button>
-              <Button variant="outlined" size="small" sx={{ margin: '2px' }}>Edit</Button>
+              <Button variant="contained" color="error" size="small" sx={{ margin: '2px' }}
+              onClick={()=>{
+                
+                
+                Swal.fire({
+                    title: 'Are you sure want to delete this data?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Delete',
+                    reverseButtons: true
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                        deleteData(value.id,tableMeta.tableData,value.setData)
+                    }
+                  })
+              }}
+              >Delete</Button>
+              {/* <Button variant="outlined" size="small" sx={{ margin: '2px' }}>Edit</Button> */}
               </>
             );
           }
@@ -49,11 +68,34 @@ const columns = [
       }
 ];
 
-const data = [
- ["James Alexander", "Admin", "25 Juni 2022", "27 September 2022"],
- ["Halland Angie", "User", "30 Juni 2022", "23 September 2022"],
-];
-
+const deleteData = async (id,data,setData)=>{
+    try {
+        const res = await request({
+            url: '/admin/user/' + id,
+            method: 'POST'
+        })
+        let filteredData = data.filter((d)=> {
+            return d[4].id !== id && d;
+        })
+        console.log('filteredData');
+        console.log(filteredData);
+        setData(filteredData)
+        
+        return Swal.fire(
+            'Deleted!',
+            'The data has been deleted.',
+            'success'
+          )
+    } catch (error) {
+        console.log('error');
+        console.log(error);
+        return Swal.fire(
+            'Something Wrong!',
+            '',
+            'error'
+          )
+    }
+}
 
 
 
@@ -82,6 +124,11 @@ export default function DataStandar(){
     useEffect(()=>{
         getData()
     },[])
+
+
+
+    
+
     const getData = async()=>{
         try {
             const res = await request({
@@ -96,9 +143,14 @@ export default function DataStandar(){
                 res.data.data.map((item)=>{
                     return[
                         item.name,
-                        item.role,
-                        item.created_at,
                         item.email,
+                        convertRole(item.role),
+                        convertDate(item.created_at),
+                        {
+                            id: item.id,
+                            data: data,
+                            setData: setData
+                        }
                     ]
                 })
             )

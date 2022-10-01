@@ -15,6 +15,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Link, useNavigate } from 'react-router-dom';
+import { request } from '../../utils/axios-utils';
+import Cookies from 'js-cookie';
 
 const drawerWidth = 240;
 const navItems = [
@@ -36,20 +38,58 @@ function DrawerAppBar(props) {
     const navigate = useNavigate()  
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [role,setRole] = React.useState('public')
+    
+    React.useEffect(()=>{
+        checkRole()
+    })
+    
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
 
+    const logoutHandler = ()=>{
+        Cookies.remove('accessToken')
+        navigate('/')
+    }
+
+    const checkRole = async ()=>{
+        try {
+            const res = await request({
+                url: '/profile',
+                method: 'get'
+            })
+            
+            console.log('res.data checkroleheader');
+            setRole('user')
+        } catch (error) {
+            return setRole('public')
+        }
+    }
+
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
             
         <Typography variant="h6" sx={{ my: 2 }}>
-            MUI
+            Standarisasi Selulosa
         </Typography>
         <Divider />
         <List>
-            {navItems.map((item) => (
+            {navItems.map((item) => {
+                if (item.label === 'Masuk' && role === 'user'){
+                    
+                    return(
+                        <Link style={{ textDecoration: 'none' }}>
+                <ListItem key={item.label} disablePadding>
+                    <ListItemButton sx={{ textAlign: 'center' }}>
+                    <ListItemText primary={'profile'} />
+                    </ListItemButton>
+                </ListItem>
+            </Link>
+                    )
+                }
+                return(
             <Link style={{ textDecoration: 'none' }}>
                 <ListItem key={item.label} disablePadding>
                     <ListItemButton sx={{ textAlign: 'center' }}>
@@ -57,7 +97,7 @@ function DrawerAppBar(props) {
                     </ListItemButton>
                 </ListItem>
             </Link>
-            ))}
+            )})}
         </List>
         </Box>
     );
@@ -77,31 +117,44 @@ function DrawerAppBar(props) {
             >
                 <MenuIcon />
             </IconButton>
+            
             <Box sx={{ flexGrow: 1, display:'flex', alignItems:'center'}}>
                 <Grid2 marginRight={'23px'}> 
                     <img src="../logo-sis.png" alt="" width={'37px'}/>
                 </Grid2>
                 <Grid2>
-                    <Typography 
-                    sx={{ 
-                        fontSize:'14px', 
-                        letterSpacing:'2px', 
-                        lineHeight:'18px',
-                        fontWeight:'bold',
-                        color: 'dark'
-                        }}>
-                        STANDARISASI SELULOSA
-                    </Typography>
+                    <Link to={'/'} style={{ color: 'inherit',textDecoration: 'none' }}>
+                        <Typography 
+                        sx={{ 
+                            fontSize:'14px', 
+                            letterSpacing:'2px', 
+                            lineHeight:'18px',
+                            fontWeight:'bold',
+                            color: 'dark'
+                            }}>
+                            STANDARISASI SELULOSA
+                        </Typography>
+                    </Link>
                 </Grid2>
             </Box>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                {navItems.map((item) => (
+                {navItems.map((item) => {
+                    if (item.label == 'Masuk' && role == "user"){
+                        return(
+                            <Button key={item.label} sx={{ color: '#fff' }} onClick={logoutHandler}>
+                                {'logout'}
+                            </Button>
+                        )
+                    }
+
+                    
+                    return(
                     <Link to={item.url} style={{ textDecoration: 'none' }}>
                         <Button key={item.label} sx={{ color: '#fff' }}>
                             {item.label}
                         </Button>
                     </Link>
-                ))}
+                )})}
             </Box>
             </Toolbar>
         </AppBar>

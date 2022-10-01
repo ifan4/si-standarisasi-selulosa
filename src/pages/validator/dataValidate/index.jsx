@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
 import { useEffect, useState } from "react";
 import { request } from "../../../utils/axios-utils";
+import { Box } from "@mui/material";
+import { convertStatus, convertStatusToColor } from "../../../helper";
 
 const columns = [
     {
@@ -30,12 +32,6 @@ const columns = [
             filter: true,
         }
     }, 
-    // {
-    //     name: "City",
-    //     options: {
-    //         filter: false
-    //     }
-    // }, 
     {
         name: "Kategori",
         options: {
@@ -49,30 +45,65 @@ const columns = [
         }
     }, 
     {
-        name: "Status",
-        options: {
-            filter: false,
-        }
-    }, 
+      name: "Berlaku",
+      options: {
+          filter: false,
+          customBodyRender: (value)=>{
+              return(
+                  <>
+                      {value === '1' ? 'Yes' : "No"}
+                  </>
+              )
+          }
+      }
+  }, 
     {
         name: "Baca",
         options: {
             filter: false,
+            customBodyRender: (value)=>{
+              return(
+                <a href={`http://sisis.ifandri.com/${value}`} target="_blank" rel="noopener noreferrer">
+                  <Button variant="outlined">
+                    Lihat
+                  </Button>
+                </a>
+              )
+          }
         }
     }, 
     {
-        name: "Validasi",
-        options: {
-            filter: false,
-        }
-    }, 
+      name: "Status Validasi",
+      options: {
+          filter: true,
+          customBodyRender: (value)=>{
+              return(
+                  <Box
+                  sx={{ 
+                      bgcolor: convertStatusToColor(value),
+                      color: 'white',
+                      padding: '5px',
+                      paddingX: '10px',
+                      textAlign: 'center',
+                      borderRadius: '3px',
+                      
+                   }}
+                  >
+                      {convertStatus(value)}
+                  </Box>
+              )
+          }
+      }
+  }, 
     {
         name: "Validate",
         options: {
-          filter: true,
+          filter: false,
           sort: false,
-          empty: true,
           customBodyRender: (value, tableMeta, updateValue) => {
+            if (value.validasi_status == 1 || value.validasi_status == 2){
+              return<>Validated</>
+            }
             return (
               <>
               <Button 
@@ -91,11 +122,7 @@ const columns = [
                     reverseButtons: true
                   }).then((result) => {
                     if (result.isConfirmed) {
-                      Swal.fire(
-                        'Rejected!',
-                        'The data has been rejected.',
-                        'success'
-                      )
+                      validatingData(value.id,tableMeta.tableData,value.setData,'2')
                     }
                   })
               }}
@@ -118,11 +145,7 @@ const columns = [
                     reverseButtons: true
                   }).then((result) => {
                     if (result.isConfirmed) {
-                      Swal.fire(
-                        'Accepted!',
-                        'The data has been accepted.',
-                        'success'
-                      )
+                      validatingData(value.id,tableMeta.tableData,value.setData,'1')
                     }
                   })
               }}
@@ -136,23 +159,44 @@ const columns = [
       }
 ];
 
-const data = [
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
-];
-
-
-
+const validatingData = async (id,data,setData,status)=>{
+  try {
+      const res = await request({
+          url: `/validator/validating/${id}/${status}`,
+          method: 'POST'
+      })
+      console.log('response res');
+      console.log(res);
+      let filteredData = data.map((d)=> {
+        if(d[7].id === id){
+          if(status == '1'){
+            d[6] = "1"
+            d[7].validasi_status = '1'
+          }
+          else if(status == '2'){
+            d[6] = "2"
+            d[7].validasi_status = '2'
+          }
+        }
+          return d;
+      })
+      setData(filteredData)
+      
+      return Swal.fire(
+          'Accepted!',
+          'The data has been accepted.',
+          'success'
+        )
+  } catch (error) {
+      console.log('error');
+      console.log(error);
+      return Swal.fire(
+          'Something Wrong!',
+          '',
+          'error'
+        )
+  }
+}
 
 export default function DataStandar(){
   const [data,setData] = useState([])
@@ -169,7 +213,7 @@ export default function DataStandar(){
     const getData = async()=>{
       try {
           const res = await request({
-              url: '/public',
+              url: '/validator',
               method: 'GET'
           })
           console.log(res);
@@ -181,7 +225,14 @@ export default function DataStandar(){
                       item.kategori,
                       item.tahun,
                       item.status,
-                      item.deskripsi
+                      item.link,
+                      item.validasi_status,
+                      {
+                        id: item.id,
+                        data: data,
+                        setData: setData,
+                        validasi_status: item.validasi_status
+                      },
                   ]
               })
           )
