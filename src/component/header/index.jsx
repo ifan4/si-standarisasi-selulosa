@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { request } from '../../utils/axios-utils';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { convertRole } from '../../helper';
@@ -62,9 +62,11 @@ export default function Index({handleDrawerToggle,title,role}) {
     return(
         <AppBar
         position="fixed"
+        variant="elevation"
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
+          backgroundColor: role == 'Admin' ? '#1976D2' : '#19C7D2'
         }}
       >
         <Toolbar
@@ -119,7 +121,11 @@ export default function Index({handleDrawerToggle,title,role}) {
                 'aria-labelledby': 'basic-button',
               }}
             >
-              <MenuItem onClick={handleClose} sx={{ paddingX: '30px' }}>Profile</MenuItem>
+              <MenuItem onClick={handleClose} sx={{ paddingX: '30px' }}>
+                <Link to={'/profile'} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  Profile
+                </Link>
+              </MenuItem>
               <MenuItem onClick={logoutHandler} sx={{ paddingX: '30px' }}>Logout</MenuItem>
             </Menu>
           </div>

@@ -57,7 +57,7 @@ export default function Index(props){
 
     return(
         <Layout title={'Dashboard'}>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem corporis laborum in ratione neque libero vitae ipsam quod veniam? Quibusdam numquam debitis quaerat sed reiciendis ullam nesciunt doloribus, id soluta.</p>
+            <h1>Welcome to Admin Dashboard!</h1>
             <Box
             sx={{
                 display: 'flex',

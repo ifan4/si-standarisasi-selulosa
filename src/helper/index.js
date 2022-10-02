@@ -35,6 +35,22 @@ export const convertRole = (roleByNumber) =>{
     return role
 }
 
+export const convertStatusBerlaku = (statByNum)=>{
+    let status = ''
+
+    switch (statByNum) {
+        case '0':
+            status = 'NO'
+            break;
+        case '1':
+            status = "YES"
+            break;
+        default:
+            break;
+    }
+
+    return status
+}
 export const convertStatus = (statByNum)=>{
     let status = ''
 

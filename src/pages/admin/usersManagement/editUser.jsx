@@ -47,8 +47,8 @@ export default function AddDataStandar(){
                 
             })
             Swal.fire(
-                'Data Added!',
-                'You successfully added a data standard!',
+                'Data Updated!',
+                'You successfully updated a user!',
                 'success'
             )
             navigate('../')
@@ -66,7 +66,7 @@ export default function AddDataStandar(){
     }
 
     return(
-        <Layout title={"Users Management"}>
+        <Layout title={"Data Standar Management"}>
             <Typography sx={{ marginBottom:'10px' }}>
                 Add User
             </Typography>

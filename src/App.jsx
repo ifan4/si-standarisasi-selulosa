@@ -12,8 +12,8 @@ import DetailData from "./pages/home/detailData";
 import Validator from './pages/validator'
 import DataValidateRequest from './pages/validator/dataValidate'
 import EditDataStandar from './pages/admin/dataStandar/editData'
-
-
+import Profile from './pages/authenication/profile'
+import EditUser from './pages/admin/usersManagement/editUser'
 export default function App(props) {
 
     // TEST
@@ -37,6 +37,7 @@ export default function App(props) {
         <Route path="usersManagement">
           <Route index element={<UsersManagement/>}/>
           <Route path="add" element={<AddUsers/>}/>
+          <Route path="edit" element={<EditUser/>}/>
         </Route>
       </Route>
 
@@ -47,6 +48,7 @@ export default function App(props) {
       <Route path="/authentication">
         <Route path="login" element={<LoginPage/>}/>
       </Route>
+      <Route path="/profile" element={<Profile/>}/>
     </Routes>
   )
 }

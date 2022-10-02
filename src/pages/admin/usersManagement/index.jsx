@@ -1,7 +1,7 @@
 import Layout from "../../../component/layout/mainLayout";
 import MUIDataTable from "mui-datatables";
 import Button from '@mui/material/Button';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { request } from "../../../utils/axios-utils";
 import { convertDate, convertRole } from "../../../helper";
@@ -36,7 +36,7 @@ const columns = [
     {
         name: "Action",
         options: {
-          filter: true,
+          filter: false,
           sort: false,
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
@@ -60,7 +60,9 @@ const columns = [
                   })
               }}
               >Delete</Button>
-              {/* <Button variant="outlined" size="small" sx={{ margin: '2px' }}>Edit</Button> */}
+              {/* <Link to={'edit'} style={{ textDecoration: 'none' }}>
+                <Button variant="outlined" size="small" sx={{ margin: '2px' }}>Edit</Button>
+              </Link> */}
               </>
             );
           }

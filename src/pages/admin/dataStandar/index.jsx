@@ -20,7 +20,8 @@ const columns = [
     {
         name: "Judul",
         options: {
-            filter: true,
+            filter: false,
+            sort: false,
         }
     },
     {
@@ -39,6 +40,7 @@ const columns = [
         name: "Dokumen",
         options: {
             filter: false,
+            sort: false,
             customBodyRender: (value)=>{
                 return(
                     <a href={`https://sisis.ifandri.com/${value}`} target={'_blank'} style={{ textDecoration: 'none' }}>
@@ -53,7 +55,8 @@ const columns = [
     {
         name: "Berlaku",
         options: {
-            filter: false,
+            filter: true,
+            filterOptions: ['1', '0'],
             customBodyRender: (value)=>{
                 return(
                     <>
@@ -66,7 +69,7 @@ const columns = [
     {
         name: "Validasi",
         options: {
-            filter: false,
+            filter: true,
             customBodyRender: (value)=>{
                 return(
                     <Box
@@ -89,7 +92,7 @@ const columns = [
     {
         name: "Action",
         options: {
-          filter: true,
+          filter: false,
           sort: false,
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
@@ -101,9 +104,6 @@ const columns = [
               size="small" 
               sx={{ margin: '2px' }}
               onClick={()=>{
-                console.log('selectedRows');
-                updateValue(null)
-                console.log(value);
                 Swal.fire({
                     title: 'Are you sure want to delete this data?',
                     icon: 'warning',

@@ -179,7 +179,7 @@ export default function AddDataStandar(){
                 <Grid md={6}>
                     <FormControl fullWidth sx={{ m: 1 }} variant="standard">
                         <FormLabel id="demo-row-radio-buttons-group-label">Dokumen</FormLabel>
-                        <Input accept="image/*" multiple type="file" 
+                        <Input accept="image/*" multiple type="file" required
                         onChange={(e)=>setState({
                             ...state,
                             document: e.target.files[0]

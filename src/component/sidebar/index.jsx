@@ -105,14 +105,16 @@ export default function Index({drawerWidth,handleDrawerToggle,mobileOpen,role='A
                 icon: <AccountCircleIcon/>
               },
             ].map((text, index) => (
-              <ListItem key={index} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {text.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={text.label} />
-                </ListItemButton>
-              </ListItem>
+              <Link to={'/profile'} style={{ textDecoration: 'none', color:'inherit' }}>
+                <ListItem key={index} disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      {text.icon}
+                    </ListItemIcon>
+                    <ListItemText primary={text.label} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
             ))}
           </List>
         </div>

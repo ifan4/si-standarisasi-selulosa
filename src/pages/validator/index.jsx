@@ -49,21 +49,7 @@ export default function Index(props){
     return(
         <Layout title={'Dashboard'} role={'Validator'}>
             <h1>Welcome to Validator Dashboard!</h1>
-            <Box
-            sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                '& > :not(style)': {
-                m: 1,
-                width: 200,
-                },
-            }}
-            >
-                
-                
-                
-                
-            </Box>
+
 
             <Grid container spacing={2}>
                 <Grid xs={12} md={4}>

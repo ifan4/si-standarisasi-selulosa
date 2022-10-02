@@ -5,6 +5,7 @@ import MUIDataTable from "mui-datatables";
 import { useNavigate,Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { request } from '../../utils/axios-utils';
+import { convertStatus, convertStatusBerlaku } from '../../helper';
 
 const columns = [
     {
@@ -18,21 +19,29 @@ const columns = [
     // }, 
     {
         name: "Kategori",
+        options: {
+            filter: true,
+            filterOptions: ['SNI Produk','Cara Uji', 'Ekolabel'],
+        }
     }, 
     {
         name: "Tahun",
     }, 
     {
         name: "Status Berlaku",
+        // filterType: 'custom',
+        // filterList: ['YES', 'NO'],
+        
         options: {
-            filter: false,
-            customBodyRender: (value, tableMeta, updateValue) => {
-                if (value == 1){
-                    return "Yes"
-                }
-                else
-                return "No"
-            }
+            filter: true,
+            filterOptions: ['NO','YES'],
+            // customBodyRender: (value, tableMeta, updateValue) => {
+            //     if (value == 1){
+            //         return "Yes"
+            //     }
+            //     else
+            //     return "No"
+            // }
         }
     }, 
     // {
@@ -75,15 +84,13 @@ const data = [
 
 export default function Home(){
     const [data,setData] = useState([])
-    console.log('state data');
-    console.log(data);
 
     const options = {
         selectableRows: false, // <===== will turn off 
-        filter: false,
+        filter: true,
         download: false,
         print: false,
-        viewcolumn: false
+        viewColumns: false
     };
 
     const getData = async()=>{
@@ -93,9 +100,6 @@ export default function Home(){
                 method: 'GET'
             },false)
 
-            console.log('berhasil');
-            console.log(res.data.data);
-
             setData(
                 res.data.data.map((item)=>{
                     return[
@@ -103,14 +107,13 @@ export default function Home(){
                         item.judul,
                         item.kategori,
                         item.tahun,
-                        item.validasi_status,
+                        convertStatusBerlaku(item.status),
                         item.id
                     ]
                 })
             )
             
         } catch (error) {
-            console.log('Gagal');
             console.log(error);
         }
     }
@@ -141,8 +144,8 @@ export default function Home(){
             <Divider sx={{ marginY:'2px' }}/>
 
             <Container maxWidth={'xxl'} sx={{ marginY: '10px' }}>
-                <Typography>Filters:</Typography>
-                <Grid container space={2} alignItems={'center'} marginBottom={3}>
+                {/* <Typography>Filters:</Typography> */}
+                {/* <Grid container space={2} alignItems={'center'} marginBottom={3}>
                     <Grid md={2}>
                         <InputLabel htmlFor="standard-adornment-amount">SNI</InputLabel>
                         <Input
@@ -177,7 +180,7 @@ export default function Home(){
                     <Grid>
                         <Button variant='contained'>GO</Button>
                     </Grid>
-                </Grid>
+                </Grid> */}
                 <MUIDataTable
                 title={"Data Standar"}
                 data={data}

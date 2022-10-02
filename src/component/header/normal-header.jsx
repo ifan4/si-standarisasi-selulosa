@@ -26,11 +26,11 @@ const navItems = [
     },
     {
         label: 'Bantuan',
-        url: '/authentication/bantuan'
+        url: '#'
     },
     {
         label: 'Cari',
-        url: '/authentication/search'
+        url: '#'
     }
 ];
 
@@ -80,17 +80,17 @@ function DrawerAppBar(props) {
                 if (item.label === 'Masuk' && role === 'user'){
                     
                     return(
-                        <Link style={{ textDecoration: 'none' }}>
+                        <Link style={{ textDecoration: 'none' }} onClick={logoutHandler}>
                 <ListItem key={item.label} disablePadding>
                     <ListItemButton sx={{ textAlign: 'center' }}>
-                    <ListItemText primary={'profile'} />
+                    <ListItemText primary={'Logout'} />
                     </ListItemButton>
                 </ListItem>
             </Link>
                     )
                 }
                 return(
-            <Link style={{ textDecoration: 'none' }}>
+                    <Link to={item.url} style={{ textDecoration: 'none' }}>
                 <ListItem key={item.label} disablePadding>
                     <ListItemButton sx={{ textAlign: 'center' }}>
                     <ListItemText primary={item.label} />
