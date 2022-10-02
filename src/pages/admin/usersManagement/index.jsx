@@ -120,7 +120,10 @@ export default function DataStandar(){
         );
         },
         selectableRows: false, // <===== will turn off 
-        responsive: 'standard'
+        responsive: 'standard',
+        download: false,
+        print: false,
+        viewColumns: false
     };
 
     useEffect(()=>{

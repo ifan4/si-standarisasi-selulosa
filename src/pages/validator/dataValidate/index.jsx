@@ -204,7 +204,10 @@ export default function DataStandar(){
 
     const options = {
         selectableRows: false, // <===== will turn off 
-        responsive: 'standard'
+        responsive: 'standard',
+        print: false,
+        download: false,
+        viewColumns: false
     };
     
     useEffect(()=>{
