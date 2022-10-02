@@ -5,8 +5,12 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useEffect, useState } from "react";
 import { request } from "../../utils/axios-utils";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Index(props){
+    const navigate = useNavigate()
     const [state,setState] = useState({
         totalData: '',
         dataValidated: '',
@@ -16,6 +20,9 @@ export default function Index(props){
 
     useEffect(()=>{
         getData()
+        if (!Cookies.get('accessToken')){
+            navigate('/')
+        }
     },[])
 
 
