@@ -56,7 +56,7 @@ const columns = [
         name: "Berlaku",
         options: {
             filter: true,
-            filterOptions: ['1', '0'],
+            // filterOptions: ['1', '0'],
             customBodyRender: (value)=>{
                 return(
                     <>
@@ -70,7 +70,7 @@ const columns = [
         name: "Validasi",
         options: {
             filter: true,
-            customBodyRender: (value)=>{
+            customBodyRender: (value,updateValue)=>{
                 return(
                     <Box
                     sx={{ 
@@ -94,6 +94,8 @@ const columns = [
         options: {
           filter: false,
           sort: false,
+          download:false,
+          print: false,
           customBodyRender: (value, tableMeta, updateValue) => {
             return (
               <>
@@ -211,6 +213,8 @@ export default function DataStandar(){
     }
 
     const options = {
+        print: false,
+        selectableRows: false, // <===== will turn off 
         customToolbar: () => {
         return (
             <Button 
@@ -223,7 +227,7 @@ export default function DataStandar(){
             </Button>
         );
         },
-        selectableRows: false, // <===== will turn off 
+        
     };
 
     return(
