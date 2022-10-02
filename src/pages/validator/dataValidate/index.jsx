@@ -204,6 +204,7 @@ export default function DataStandar(){
 
     const options = {
         selectableRows: false, // <===== will turn off 
+        responsive: 'standard'
     };
     
     useEffect(()=>{

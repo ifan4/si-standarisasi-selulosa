@@ -120,7 +120,7 @@ export default function DataStandar(){
         );
         },
         selectableRows: false, // <===== will turn off 
-        onRowsDelete:(e)=>{console.log(e.data)},
+        responsive: 'standard'
     };
 
     useEffect(()=>{

@@ -90,7 +90,8 @@ export default function Home(){
         filter: true,
         download: false,
         print: false,
-        viewColumns: false
+        viewColumns: false,
+        responsive: 'standard'
     };
 
     const getData = async()=>{

@@ -215,6 +215,7 @@ export default function DataStandar(){
     const options = {
         print: false,
         selectableRows: false, // <===== will turn off 
+        responsive: 'standard',
         customToolbar: () => {
         return (
             <Button 
