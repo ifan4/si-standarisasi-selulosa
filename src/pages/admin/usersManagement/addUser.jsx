@@ -11,11 +11,12 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { request } from "../../../utils/axios-utils";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import Button from '@mui/lab/LoadingButton';
+import Cookies from "js-cookie";
 
 export default function AddDataStandar(){
     const [state,setState] = useState({
@@ -26,8 +27,12 @@ export default function AddDataStandar(){
     })
     const navigate = useNavigate()
     const [isLoading,setIsLoading] = useState(false)
-    console.log('state nih');
-    console.log(state);
+
+    useEffect(()=>{
+        if (!Cookies.get('accessToken')){
+            navigate('/')
+        }
+    },[])
 
     const onChangeHandler = (e)=>{
         return setState({

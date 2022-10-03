@@ -10,9 +10,16 @@ import { convertStatus, convertStatusBerlaku } from '../../helper';
 const columns = [
     {
         name: "Standar",
+        options: {
+            filter: false,
+        }
     }, 
     {
         name: "Judul",
+        options: {
+            filter: false,
+            sort: false
+        }
     }, 
     // {
     //     name: "City",
@@ -28,32 +35,17 @@ const columns = [
         name: "Tahun",
     }, 
     {
-        name: "Status Berlaku",
-        // filterType: 'custom',
-        // filterList: ['YES', 'NO'],
-        
+        name: "Status Berlaku",    
         options: {
             filter: true,
-            filterOptions: ['NO','YES'],
-            // customBodyRender: (value, tableMeta, updateValue) => {
-            //     if (value == 1){
-            //         return "Yes"
-            //     }
-            //     else
-            //     return "No"
-            // }
+            filterOptions: ['YES', 'NO'],
         }
     }, 
-    // {
-    //     name: "Baca",
-    // }, 
-    // {
-    //     name: "Validasi",
-    // }, 
     {
         name: "Action",
         options: {
             filter: false,
+            sort: false,
             customBodyRender: (value, tableMeta, updateValue) => {
                 return (
                 <Link to={`/detailData?id=${value}`} style={{ textDecoration: 'none' }}>
@@ -67,20 +59,6 @@ const columns = [
           
 ];
 
-const data = [
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
- ["SNI 103:2017", "Kertas Tisu", "Bekasi", "Pokok", "2021", "OK", "Lorem", "YA"],
-];
 
 export default function Home(){
     const [data,setData] = useState([])
@@ -131,7 +109,7 @@ export default function Home(){
                 width: {xs: '90%',md: '50%'},textAlign:'center',padding:'20px', margin: 'auto', fontSize:{xs: '15px', md: '33px'}, fontWeight: 'bold'
              }}
             >
-                Selamat Datang di Sistem Informasi Standardisasi Industri Selulosa
+                Selamat Datang di Sistem Informasi Standarisasi Industri Selulosa
             </Typography>
             <Typography 
             sx={{ 

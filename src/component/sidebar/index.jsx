@@ -40,7 +40,7 @@ export default function Index({drawerWidth,handleDrawerToggle,mobileOpen,role='A
                         fontWeight:'bold',
                         color: 'dark'
                         }}>
-                        STANDARISASI SELULOSA
+                        SI-STANDARD
                     </Typography>
                 </Grid2>
             </Box>

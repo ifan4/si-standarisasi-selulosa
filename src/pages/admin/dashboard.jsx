@@ -109,7 +109,7 @@ const VarCard = ({title,value=0})=>{
             paddingTop: '5px'
         }}>
             <h4>{title}</h4>
-            <div>{value}</div>
+            <div style={{ fontSize: '23px',fontWeight:'bold'}}>{value}</div>
         </Paper>
     )
 }

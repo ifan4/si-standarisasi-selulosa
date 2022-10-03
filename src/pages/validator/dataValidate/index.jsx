@@ -6,30 +6,42 @@ import Swal from 'sweetalert2'
 import { useEffect, useState } from "react";
 import { request } from "../../../utils/axios-utils";
 import { Box } from "@mui/material";
-import { convertStatus, convertStatusToColor } from "../../../helper";
+import { convertStatus, convertStatusBerlaku, convertStatusToColor } from "../../../helper";
 
 const columns = [
+  {
+    name: "NO",
+    options: {
+        filter: false,
+        customBodyRender: (value) => {
+          return (
+              <h5 
+              style={{ 
+                  backgroundColor: '#55AAFF',
+                  color: 'white',
+                  padding: '5px',
+                  borderRadius: '5px',
+                  textAlign:'center',
+                  margin: '10px'
+               }}>
+                  {value}
+              </h5>
+          );
+        }
+    }
+},
     {
         name: "Standar",
         options: {
-            filter: true,
-            customBodyRender: (value, tableMeta, updateValue) => {
-                return (
-                    <Link 
-                    style={{ 
-                        color: 'blue',
-                        textDecoration: 'none'
-                     }}>
-                        {value}
-                    </Link>
-                );
-              }
+            filter: false,
+            sort: false
         },
     }, 
     {
         name: "Judul",
         options: {
-            filter: true,
+            filter: false,
+            sort: false
         }
     }, 
     {
@@ -47,23 +59,18 @@ const columns = [
     {
       name: "Berlaku",
       options: {
-          filter: false,
-          customBodyRender: (value)=>{
-              return(
-                  <>
-                      {value === '1' ? 'Yes' : "No"}
-                  </>
-              )
-          }
-      }
+        filter: true,
+        filterOptions: ['YES', 'NO'],
+    }
   }, 
     {
         name: "Baca",
         options: {
             filter: false,
+            sort: false,
             customBodyRender: (value)=>{
               return(
-                <a href={`http://sisis.ifandri.com/${value}`} target="_blank" rel="noopener noreferrer">
+                <a href={`http://sisis.ifandri.com/${value}`} target="_blank" style={{ textDecoration: 'none' }}>
                   <Button variant="outlined">
                     Lihat
                   </Button>
@@ -165,17 +172,19 @@ const validatingData = async (id,data,setData,status)=>{
           url: `/validator/validating/${id}/${status}`,
           method: 'POST'
       })
-      console.log('response res');
-      console.log(res);
+      
+      let statusRes = ''
       let filteredData = data.map((d)=> {
         if(d[7].id === id){
           if(status == '1'){
             d[6] = "1"
             d[7].validasi_status = '1'
+            statusRes = 'Accepted'
           }
           else if(status == '2'){
             d[6] = "2"
             d[7].validasi_status = '2'
+            statusRes = 'Rejected'
           }
         }
           return d;
@@ -183,8 +192,8 @@ const validatingData = async (id,data,setData,status)=>{
       setData(filteredData)
       
       return Swal.fire(
-          'Accepted!',
-          'The data has been accepted.',
+          statusRes + '!',
+          `The data has been ${statusRes}.`,
           'success'
         )
   } catch (error) {
@@ -220,24 +229,26 @@ export default function DataStandar(){
               url: '/validator',
               method: 'GET'
           })
-          console.log(res);
+          let num = 0
           setData(
               res.data.data.map((item)=>{
-                  return[
-                      item.standar,
-                      item.judul,
-                      item.kategori,
-                      item.tahun,
-                      item.status,
-                      item.link,
-                      item.validasi_status,
-                      {
-                        id: item.id,
-                        data: data,
-                        setData: setData,
-                        validasi_status: item.validasi_status
-                      },
-                  ]
+                num += 1
+                return[
+                    num,
+                    item.standar,
+                    item.judul,
+                    item.kategori,
+                    item.tahun,
+                    convertStatusBerlaku(item.status),
+                    item.link,
+                    item.validasi_status,
+                    {
+                      id: item.id,
+                      data: data,
+                      setData: setData,
+                      validasi_status: item.validasi_status
+                    },
+                ]
               })
           )
       } catch (error) {

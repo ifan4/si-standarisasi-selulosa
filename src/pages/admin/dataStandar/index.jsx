@@ -12,6 +12,27 @@ import { convertStatus, convertStatusToColor } from "../../../helper";
 
 const columns = [
     {
+        name: "NO",
+        options: {
+            filter: false,
+            customBodyRender: (value) => {
+              return (
+                  <h5 
+                  style={{ 
+                      backgroundColor: '#55AAFF',
+                      color: 'white',
+                      padding: '5px',
+                      borderRadius: '5px',
+                      textAlign:'center',
+                      margin: '10px'
+                   }}>
+                      {value}
+                  </h5>
+              );
+            }
+        }
+    },
+    {
         name: "Standar",
         options: {
             filter: true,
@@ -150,8 +171,9 @@ const deleteData = async (id,data,setData)=>{
             method: 'POST'
         })
         let filteredData = data.filter((d)=> {
-            return d[7].id !== id && d;
+            return d[8].id !== id && d;
         })
+        console.log('filteredData');
         console.log(filteredData);
         setData(filteredData)
         
@@ -180,6 +202,9 @@ export default function DataStandar(){
 
     useEffect(()=>{
         getData()
+        if (!Cookies.get('accessToken')){
+            navigate('/')
+        }
     },[])
 
     const getData = async()=>{
@@ -188,10 +213,12 @@ export default function DataStandar(){
                 url: '/admin',
                 method: 'GET',
             })
-            console.log(res);
+            let num = 0
             setData(
                 res.data.data.map((item)=>{
+                    num += 1
                     return[
+                        num,
                         item.standar,
                         item.judul,
                         item.kategori,

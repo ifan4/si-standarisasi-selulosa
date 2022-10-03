@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { request } from "../../../utils/axios-utils";
 import { convertDate, convertRole } from "../../../helper";
 import Swal from "sweetalert2";
+import Cookies from "js-cookie";
 
 
 const columns = [
@@ -60,9 +61,9 @@ const columns = [
                   })
               }}
               >Delete</Button>
-              {/* <Link to={'edit'} style={{ textDecoration: 'none' }}>
+              <Link to={'edit?id='+value.id} style={{ textDecoration: 'none' }}>
                 <Button variant="outlined" size="small" sx={{ margin: '2px' }}>Edit</Button>
-              </Link> */}
+              </Link>
               </>
             );
           }
@@ -104,8 +105,6 @@ const deleteData = async (id,data,setData)=>{
 export default function DataStandar(){
     const [data,setData] = useState([])
     
-    console.log('state data');
-    console.log(data);
     const navigate = useNavigate()
 
     const options = {
@@ -128,6 +127,9 @@ export default function DataStandar(){
 
     useEffect(()=>{
         getData()
+        if (!Cookies.get('accessToken')){
+            navigate('/')
+        }
     },[])
 
 

@@ -11,11 +11,12 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { request } from "../../../utils/axios-utils";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Button from '@mui/lab/LoadingButton';
+import Cookies from "js-cookie";
 
 export default function AddDataStandar(){
     const [state,setState] = useState({
@@ -26,8 +27,8 @@ export default function AddDataStandar(){
     })
     const navigate = useNavigate()
     const [isLoading,setIsLoading] = useState(false)
-    console.log('state nih');
-    console.log(state);
+    
+    const [searchParams] = useSearchParams();
 
     const onChangeHandler = (e)=>{
         return setState({
@@ -36,16 +37,47 @@ export default function AddDataStandar(){
         })
     }
 
+    useEffect(()=>{
+        getData()
+        if (!Cookies.get('accessToken')){
+            navigate('/')
+        }
+    },[])
+
+    const getData = async()=>{
+        try {
+            const res = await request({
+                url: '/admin/user/detail/'+searchParams.get('id'),
+                method: 'get'
+            })
+            
+            console.log('res getdAta()');
+            console.log(res);
+            setState(
+            {
+                name: res.data.data.name,
+                email: res.data.data.email,
+                password: '',
+                role: res.data.data.role
+            }
+            )
+        } catch (error) {
+            
+        }
+    }
+
     const onSubmitHandler = async (e)=>{
         e.preventDefault()
         setIsLoading(true)
         try {
             const res = await request({
-                url: '/admin/add_user',
+                url: '/admin/user/edit/'+searchParams.get('id'),
                 method: 'POST',
                 data: state
                 
             })
+            console.log('res berhasil update');
+            console.log(res);
             Swal.fire(
                 'Data Updated!',
                 'You successfully updated a user!',
@@ -53,6 +85,8 @@ export default function AddDataStandar(){
             )
             navigate('../')
         } catch (error) {
+            
+            console.log('res error');
             console.log(error);
             Swal.fire(
                 'Something wrong!',
@@ -66,7 +100,7 @@ export default function AddDataStandar(){
     }
 
     return(
-        <Layout title={"Data Standar Management"}>
+        <Layout title={"Users Management"}>
             <Typography sx={{ marginBottom:'10px' }}>
                 Add User
             </Typography>
@@ -78,6 +112,7 @@ export default function AddDataStandar(){
                             <Input
                             required
                             name="name"
+                            value={state.name}
                             onChange={onChangeHandler}
                             />
                         </FormControl>
@@ -89,6 +124,7 @@ export default function AddDataStandar(){
                             required
                             type="email"
                             name="email"
+                            value={state.email}
                             onChange={onChangeHandler}
                             />
                         </FormControl>
@@ -111,6 +147,7 @@ export default function AddDataStandar(){
                             row
                             aria-labelledby="demo-row-radio-buttons-group-label"
                             name="role"
+                            value={state.role}
                             onChange={onChangeHandler}
                             >
                                 <FormControlLabel value="1" control={<Radio required/>} label="Admin" />
@@ -127,7 +164,7 @@ export default function AddDataStandar(){
                             Reset
                         </Button>
                         <Button loading={isLoading} variant="contained" type="submit">
-                            Submit
+                            Update
                         </Button>
                     </Grid>
                     </Grid>

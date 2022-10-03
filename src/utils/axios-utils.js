@@ -10,7 +10,6 @@ export const request = ( {...options},token=true ) => {
     
     if (token){
         client.defaults.headers.common.Authorization = `Bearer ${Cookies.get('accessToken')}`
-        console.log('masuk token true0');
     }
 
 

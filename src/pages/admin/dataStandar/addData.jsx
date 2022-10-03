@@ -11,11 +11,12 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { request } from "../../../utils/axios-utils";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import Button from '@mui/lab/LoadingButton';
+import Cookies from "js-cookie";
 
 export default function AddDataStandar(){
     const [state,setState] = useState({
@@ -27,10 +28,14 @@ export default function AddDataStandar(){
         deskripsi: '',
         document: ''
     })
-    const navigate = useNavigate()
     const [isLoading,setIsLoading] = useState(false)
-
-    console.log(state);
+    
+    const navigate = useNavigate()
+    useEffect(()=>{
+        if (!Cookies.get('accessToken')){
+            navigate('/')
+        }
+    },[])
 
     const onChangeHandler = (e)=>{
         return setState({
@@ -105,9 +110,10 @@ export default function AddDataStandar(){
                         name="kategori"
                         onChange={onChangeHandler}
                         >
-                        <MenuItem value={'SNI Produk'}>SNI Produk</MenuItem>
-                        <MenuItem value={'Cara Uji'}>Cara Uji</MenuItem>
-                        <MenuItem value={'Ekolabel'}>Ekolabel</MenuItem>
+                            <MenuItem value={'SNI Produk'}>SNI Produk</MenuItem>
+                            <MenuItem value={'SNI Cara Uji'}>SNI Cara Uji</MenuItem>
+                            <MenuItem value={'SNI Ekolabel'}>SNI Ekolabel</MenuItem>
+                            <MenuItem value={'Standar Industri Hijau'}>Standar Industri Hijau</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>

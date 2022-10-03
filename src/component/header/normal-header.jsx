@@ -72,7 +72,7 @@ function DrawerAppBar(props) {
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
             
         <Typography variant="h6" sx={{ my: 2 }}>
-            Standarisasi Selulosa
+            SI-STANDARD
         </Typography>
         <Divider />
         <List>
@@ -132,7 +132,7 @@ function DrawerAppBar(props) {
                             fontWeight:'bold',
                             color: 'dark'
                             }}>
-                            STANDARISASI SELULOSA
+                            SI-STANDARD
                         </Typography>
                     </Link>
                 </Grid2>
