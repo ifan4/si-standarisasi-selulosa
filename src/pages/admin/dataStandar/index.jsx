@@ -39,26 +39,26 @@ const columns = [
         }
     }, 
     {
-        name: "Judul",
+        name: "JUDUL",
         options: {
             filter: false,
             sort: false,
         }
     },
     {
-        name: "Kategori",
+        name: "KATEGORI",
         options: {
             filter: true,
         }
     },
     {
-        name: "Tahun",
+        name: "TAHUN",
         options: {
             filter: true,
         }
     }, 
     {
-        name: "Dokumen",
+        name: "DOKUMEN",
         options: {
             filter: false,
             sort: false,
@@ -111,7 +111,7 @@ const columns = [
         }
     }, 
     {
-        name: "Action",
+        name: "ACTION",
         options: {
           filter: false,
           sort: false,

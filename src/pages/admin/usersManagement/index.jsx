@@ -17,9 +17,10 @@ const columns = [
         }
     }, 
     {
-        name: "Email",
+        name: "EMAIL",
         options: {
             filter: false,
+            sort: false,
         }
     }, 
     {
@@ -29,13 +30,14 @@ const columns = [
         }
     }, 
     {
-        name: "Created at",
+        name: "CREATED AT",
         options: {
-            filter: false
+            filter: false,
+            sort: false,
         }
     }, 
     {
-        name: "Action",
+        name: "ACTION",
         options: {
           filter: false,
           sort: false,

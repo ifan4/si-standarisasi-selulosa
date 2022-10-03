@@ -31,14 +31,14 @@ const columns = [
     }
 },
     {
-        name: "Standar",
+        name: "STANDAR",
         options: {
             filter: false,
             sort: false
         },
     }, 
     {
-        name: "Judul",
+        name: "JUDUL",
         options: {
             filter: false,
             sort: false
@@ -64,7 +64,7 @@ const columns = [
     }
   }, 
     {
-        name: "Baca",
+        name: "BACA",
         options: {
             filter: false,
             sort: false,
@@ -103,7 +103,7 @@ const columns = [
       }
   }, 
     {
-        name: "Validate",
+        name: "VALIDATE",
         options: {
           filter: false,
           sort: false,
