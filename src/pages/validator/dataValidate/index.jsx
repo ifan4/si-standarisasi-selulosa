@@ -175,15 +175,15 @@ const validatingData = async (id,data,setData,status)=>{
       
       let statusRes = ''
       let filteredData = data.map((d)=> {
-        if(d[7].id === id){
+        if(d[8].id === id){
           if(status == '1'){
-            d[6] = "1"
-            d[7].validasi_status = '1'
+            d[7] = "1"
+            d[8].validasi_status = '1'
             statusRes = 'Accepted'
           }
           else if(status == '2'){
-            d[6] = "2"
-            d[7].validasi_status = '2'
+            d[7] = "2"
+            d[8].validasi_status = '2'
             statusRes = 'Rejected'
           }
         }
