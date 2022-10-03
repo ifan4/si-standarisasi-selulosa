@@ -40,9 +40,7 @@ export default function Detail(){
 
 
     const [searchParams] = useSearchParams();
-    useEffect(()=>{
-        console.log(searchParams.get('id'));
-    },[])
+
 
 
     const getDataPublic = async()=>{
@@ -52,8 +50,6 @@ export default function Detail(){
                 method: 'GET'
             },false)
 
-            console.log('berhasil');
-            console.log(res.data.data[0]);
 
             setState(
                 {
@@ -109,9 +105,11 @@ export default function Detail(){
              }}
             >
                 <h5>Deskripsi Singkat</h5>
-                <p>{state.desc}</p>
+                <Typography>
+                    {state.desc}
+                </Typography>
                 <p>
-                    SNI dapat dimiliki dengan membeli di <a href="#">Link Pesta BSN atau  SISPK SNI</a>
+                    SNI dapat dimiliki dengan membeli di <a href="https://pesta.bsn.go.id/" target={"_blank"}>Link Pesta BSN atau  SISPK SNI</a>
                 </p>
                 {
                     role == 'user' &&

@@ -105,8 +105,10 @@ export default function AddDataStandar(){
                             required
                             name="password"
                             onChange={onChangeHandler}
+                            InputProps={{ inputProps: { min: 8 } }}
                             />
                         </FormControl>
+                        <Typography>*Password must be atleast 8 characters</Typography>
                     </Grid>
                     
                     <Grid md={6}>
