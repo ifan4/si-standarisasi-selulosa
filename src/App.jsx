@@ -14,6 +14,10 @@ import DataValidateRequest from './pages/validator/dataValidate'
 import EditDataStandar from './pages/admin/dataStandar/editData'
 import Profile from './pages/authenication/profile'
 import EditUser from './pages/admin/usersManagement/editUser'
+import DataByCategory from "./pages/home/dataByCategory";
+import HelpManagement from './pages/admin/helpManagement'
+
+
 export default function App(props) {
 
     // TEST
@@ -25,6 +29,7 @@ export default function App(props) {
   return(
     <Routes>
       <Route path="/" element={<Home/>}/>
+      <Route path="/dataStandar" element={<DataByCategory/>}/>
       <Route path="/detailData" element={<DetailData/>}/>
 
       <Route path="/admin">
@@ -38,6 +43,9 @@ export default function App(props) {
           <Route index element={<UsersManagement/>}/>
           <Route path="add" element={<AddUsers/>}/>
           <Route path="edit" element={<EditUser/>}/>
+        </Route>
+        <Route path="helpManagement">
+          <Route index element={<HelpManagement/>} />
         </Route>
       </Route>
 

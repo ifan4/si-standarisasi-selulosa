@@ -30,7 +30,7 @@ const LoginPage = () => {
     e.preventDefault()
  
       await axios({
-        url: `https://sisis.ifandri.com/api/login?email=${email}&password=${password}`,
+        url: `${process.env.REACT_APP_BASE_URL}/api/login?email=${email}&password=${password}`,
         method: 'POST',
         
       })

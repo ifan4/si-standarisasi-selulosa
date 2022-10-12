@@ -209,7 +209,7 @@ export default function AddDataStandar(){
                     </FormControl>
                 </Grid>
                 <Grid md={6}>
-                    <a href={`https://sisis.ifandri.com/${state.document}`} target="_blank" rel="noopener noreferrer">
+                    <a href={`${process.env.REACT_APP_BASE_URL}/${state.document}`} target="_blank" rel="noopener noreferrer">
                         <Button variant="outlined">
                             Lihat Dokumen
                         </Button>    

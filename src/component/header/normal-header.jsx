@@ -17,33 +17,47 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Link, useNavigate } from 'react-router-dom';
 import { request } from '../../utils/axios-utils';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const drawerWidth = 240;
-const navItems = [
-    {
-        label: 'Masuk',
-        url: '/authentication/login'
-    },
-    {
-        label: 'Bantuan',
-        url: '#'
-    },
-    {
-        label: 'Cari',
-        url: '#'
-    }
-];
+
 
 function DrawerAppBar(props) {
     const navigate = useNavigate()  
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [role,setRole] = React.useState('public')
+    const [linkBantuan,setLinkBantuan] = React.useState('')
+    const [fixLink,setFixLink] = React.useState('')
     
     React.useEffect(()=>{
         checkRole()
+        getLink()
     })
+
+    const navItems = [
+        {
+            label: 'Masuk',
+            url: '/authentication/login'
+        },
+        {
+            label: 'Bantuan',
+            url: fixLink
+        },
+    ];
     
+
+    const getLink = async()=>{
+        try {
+            const res = await request({
+                url: linkBantuan,
+                method: 'GET'
+            })
+            setFixLink(res.data.data)
+        } catch (error) {
+            
+        }
+    }
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -60,10 +74,12 @@ function DrawerAppBar(props) {
                 url: '/profile',
                 method: 'get'
             })
+
             
-            console.log('res.data checkroleheader');
+            setLinkBantuan('/user/panduan/2')
             setRole('user')
         } catch (error) {
+            setLinkBantuan('/public/panduan/0')
             return setRole('public')
         }
     }
@@ -81,12 +97,24 @@ function DrawerAppBar(props) {
                     
                     return(
                         <Link style={{ textDecoration: 'none' }} onClick={logoutHandler}>
-                <ListItem key={item.label} disablePadding>
-                    <ListItemButton sx={{ textAlign: 'center' }}>
-                    <ListItemText primary={'Logout'} />
-                    </ListItemButton>
-                </ListItem>
-            </Link>
+                            <ListItem key={item.label} disablePadding>
+                                <ListItemButton sx={{ textAlign: 'center' }}>
+                                <ListItemText primary={'Logout'} />
+                                </ListItemButton>
+                            </ListItem>
+                        </Link>
+                    )
+                }
+                if (item.label === 'Bantuan'){
+                    
+                    return(
+                        <a target={'_blank'} href={item.url} style={{ textDecoration: 'none' }} >
+                            <ListItem key={item.label} disablePadding>
+                                <ListItemButton sx={{ textAlign: 'center' }}>
+                                <ListItemText primary={item.label} />
+                                </ListItemButton>
+                            </ListItem>
+                        </a>
                     )
                 }
                 return(
@@ -144,6 +172,16 @@ function DrawerAppBar(props) {
                             <Button key={item.label} sx={{ color: '#fff' }} onClick={logoutHandler}>
                                 {'logout'}
                             </Button>
+                        )
+                    }
+                    if (item.label === 'Bantuan'){
+                    
+                        return(
+                            <a target={'_blank'} href={`${process.env.REACT_APP_BASE_URL}/${item.url}`} style={{ textDecoration: 'none' }} >
+                                <Button key={item.label} sx={{ color: '#fff' }}>
+                                    {item.label}
+                                </Button>
+                            </a>
                         )
                     }
 

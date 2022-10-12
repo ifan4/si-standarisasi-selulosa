@@ -64,7 +64,7 @@ const columns = [
             sort: false,
             customBodyRender: (value)=>{
                 return(
-                    <a href={`https://sisis.ifandri.com/${value}`} target={'_blank'} style={{ textDecoration: 'none' }}>
+                    <a href={`${process.env.REACT_APP_BASE_URL}/${value}`} target={'_blank'} style={{ textDecoration: 'none' }}>
                         <Button variant="outlined">
                             Baca
                         </Button>

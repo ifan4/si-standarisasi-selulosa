@@ -16,6 +16,9 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import { Link } from 'react-router-dom';
+import ContactSupportIcon from '@mui/icons-material/ContactSupport';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import { request } from '../../utils/axios-utils';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root')
@@ -23,6 +26,24 @@ const root = ReactDOM.createRoot(
 
 export default function Index({drawerWidth,handleDrawerToggle,mobileOpen,role='Admin'}){
     const [onHighlight, setOnHighlight] = useState('Dashboard')
+    
+    const [fixLink,setFixLink] = useState('')
+
+    useEffect(()=>{
+      getLink()
+    },[])
+
+    const getLink = async()=>{
+      try {
+          const res = await request({
+              url: role === 'admin' ? '/admin/panduan/1' : '/validator/panduan/3',
+              method: 'GET'
+          })
+          setFixLink(`${process.env.REACT_APP_BASE_URL}/${res.data.data}`)
+      } catch (error) {
+          
+      }
+  }
 
     const drawer = (
         <div>
@@ -66,6 +87,12 @@ export default function Index({drawerWidth,handleDrawerToggle,mobileOpen,role='A
                   link: '/admin/usersManagement',
                   role: 'Admin'
                 },
+                {
+                  label: 'Bantuan Management',
+                  icon: <ContactSupportIcon/>,
+                  link: fixLink,
+                  role: 'all'
+                },
                 // ===============
                 {
                   label: 'Dashboard',
@@ -78,8 +105,26 @@ export default function Index({drawerWidth,handleDrawerToggle,mobileOpen,role='A
                   icon: <TableChartIcon/>,
                   link: '/validator/Datavalidate-request',
                   role: 'Validator'
-                }
+                },
+                
               ].map((text, index) => {
+
+
+                    if (text.role === 'all')
+                    return(
+                        (
+                            <a target={'_blank'} href={text.link} style={{ textDecoration: 'none', color:'inherit' }}>
+                              <ListItem key={index} disablePadding>
+                                  <ListItemButton>
+                                    <ListItemIcon>
+                                      {text.icon}
+                                    </ListItemIcon>
+                                    <ListItemText primary={text.label}/>
+                                  </ListItemButton>
+                              </ListItem>
+                            </a>
+                          )
+                    )
                     if (text.role === role)
                     return(
                         (
@@ -99,23 +144,27 @@ export default function Index({drawerWidth,handleDrawerToggle,mobileOpen,role='A
           </List>
           <Divider />
           <List>
-            {[
-              {
-                label: 'My Profile',
-                icon: <AccountCircleIcon/>
-              },
-            ].map((text, index) => (
+            
               <Link to={'/profile'} style={{ textDecoration: 'none', color:'inherit' }}>
-                <ListItem key={index} disablePadding>
+                <ListItem disablePadding>
                   <ListItemButton>
                     <ListItemIcon>
-                      {text.icon}
+                      <AccountCircleIcon/>
                     </ListItemIcon>
-                    <ListItemText primary={text.label} />
+                    <ListItemText primary={'My Profile'} />
                   </ListItemButton>
                 </ListItem>
               </Link>
-            ))}
+              <Link to={'#'} style={{ textDecoration: 'none', color:'inherit' }}>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <QuestionMarkIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary={'Bantuan'} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
           </List>
         </div>
       );
