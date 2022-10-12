@@ -53,7 +53,7 @@ function DrawerAppBar(props) {
                 url: linkBantuan,
                 method: 'GET'
             })
-            setFixLink(res.data.data)
+            setFixLink(process.env.REACT_APP_BASE_URL+ '/'+res.data.data)
         } catch (error) {
             
         }
@@ -177,7 +177,7 @@ function DrawerAppBar(props) {
                     if (item.label === 'Bantuan'){
                     
                         return(
-                            <a target={'_blank'} href={`${process.env.REACT_APP_BASE_URL}/${item.url}`} style={{ textDecoration: 'none' }} >
+                            <a target={'_blank'} href={`${item.url}`} style={{ textDecoration: 'none' }} >
                                 <Button key={item.label} sx={{ color: '#fff' }}>
                                     {item.label}
                                 </Button>

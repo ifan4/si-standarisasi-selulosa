@@ -90,8 +90,8 @@ export default function Index({drawerWidth,handleDrawerToggle,mobileOpen,role='A
                 {
                   label: 'Bantuan Management',
                   icon: <ContactSupportIcon/>,
-                  link: fixLink,
-                  role: 'all'
+                  link: '/admin/helpManagement',
+                  role: 'Admin'
                 },
                 // ===============
                 {
@@ -108,23 +108,6 @@ export default function Index({drawerWidth,handleDrawerToggle,mobileOpen,role='A
                 },
                 
               ].map((text, index) => {
-
-
-                    if (text.role === 'all')
-                    return(
-                        (
-                            <a target={'_blank'} href={text.link} style={{ textDecoration: 'none', color:'inherit' }}>
-                              <ListItem key={index} disablePadding>
-                                  <ListItemButton>
-                                    <ListItemIcon>
-                                      {text.icon}
-                                    </ListItemIcon>
-                                    <ListItemText primary={text.label}/>
-                                  </ListItemButton>
-                              </ListItem>
-                            </a>
-                          )
-                    )
                     if (text.role === role)
                     return(
                         (
@@ -155,7 +138,7 @@ export default function Index({drawerWidth,handleDrawerToggle,mobileOpen,role='A
                   </ListItemButton>
                 </ListItem>
               </Link>
-              <Link to={'#'} style={{ textDecoration: 'none', color:'inherit' }}>
+              <a target={'_blank'} href={fixLink} style={{ textDecoration: 'none', color:'inherit' }}>
                 <ListItem disablePadding>
                   <ListItemButton>
                     <ListItemIcon>
@@ -164,7 +147,7 @@ export default function Index({drawerWidth,handleDrawerToggle,mobileOpen,role='A
                     <ListItemText primary={'Bantuan'} />
                   </ListItemButton>
                 </ListItem>
-              </Link>
+              </a>
           </List>
         </div>
       );

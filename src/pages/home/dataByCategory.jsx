@@ -63,7 +63,7 @@ export default function DataByCategory(){
     const navigate = useNavigate()
     const [columns,setColumns] = useState(columns_var)
     const [data,setData] = useState([])
-    const [isLoading,setIsLoading] = useState(true)
+    const [isLoading,setIsLoading] = useState()
    
     const [searchParams] = useSearchParams();
     const [category, setCategory] = useState('')
