@@ -110,11 +110,11 @@ export default function Home(){
                 ?
                 <Stack spacing={1}
                 sx={{ 
-                    margin: {xs: '10px', md: '50px'}
+                    margin: {xs: '10px', md: '50px'},
                  }}
                 >
                     {/* For variant="text", adjust the height via font-size */}
-                    <Skeleton variant="text" sx={{ fontSize: '50px' }} />
+                    <Skeleton variant="text" sx={{ fontSize: '50px',marginTop: '20px' }} />
                     <Skeleton variant="rectangular" width={250} height={250} />
                     <Skeleton variant="rounded" width={210} height={60} />
                     <Skeleton variant="text" sx={{ fontSize: '50px' }} />

@@ -17,6 +17,7 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { Link, useNavigate } from 'react-router-dom';
 import { request } from '../../utils/axios-utils';
 import Cookies from 'js-cookie';
+import { Skeleton } from '@mui/material';
 import axios from 'axios';
 
 const drawerWidth = 240;
@@ -29,11 +30,12 @@ function DrawerAppBar(props) {
     const [role,setRole] = React.useState('public')
     const [linkBantuan,setLinkBantuan] = React.useState('')
     const [fixLink,setFixLink] = React.useState('')
+    const [isLoading,setIsLoading] = React.useState(false)
     
     React.useEffect(()=>{
         checkRole()
         getLink()
-    })
+    },[])
 
     const navItems = [
         {
@@ -49,6 +51,7 @@ function DrawerAppBar(props) {
 
     const getLink = async()=>{
         try {
+            setIsLoading(true)
             const res = await request({
                 url: linkBantuan,
                 method: 'GET'
@@ -56,6 +59,9 @@ function DrawerAppBar(props) {
             setFixLink(process.env.REACT_APP_BASE_URL+ '/'+res.data.data)
         } catch (error) {
             
+        }
+        finally{
+            setIsLoading(false)
         }
     }
 
@@ -75,7 +81,6 @@ function DrawerAppBar(props) {
                 method: 'get'
             })
 
-            
             setLinkBantuan('/user/panduan/2')
             setRole('user')
         } catch (error) {
@@ -131,6 +136,18 @@ function DrawerAppBar(props) {
     );
 
     const container = window !== undefined ? () => window().document.body : undefined;
+
+    if (isLoading){
+        return(
+                <AppBar component="nav">
+                    <Box sx={{ flexGrow: 1, display:'flex', alignItems:'center',marginX:'20px', justifyContent:'space-between'}}>
+                        <Skeleton variant="text" sx={{ fontSize: '50px' }} width={500}/>
+              
+                        <Skeleton variant="text" sx={{ fontSize: '50px' }} width={200}/>
+                    </Box>
+                </AppBar>
+        )
+    }
 
     return (
         <Box sx={{ display: 'flex' }}>
