@@ -36,9 +36,10 @@ export default function Index({drawerWidth,handleDrawerToggle,mobileOpen,role='A
     const getLink = async()=>{
       try {
           const res = await request({
-              url: role === 'admin' ? '/admin/panduan/1' : '/validator/panduan/3',
+              url: role === 'Admin' ? '/admin/panduan/1' : '/validator/panduan/3',
               method: 'GET'
           })
+          
           setFixLink(`${process.env.REACT_APP_BASE_URL}/${res.data.data}`)
       } catch (error) {
           

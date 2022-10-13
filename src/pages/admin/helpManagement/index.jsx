@@ -31,17 +31,26 @@ export default function Index(props){
                     <VarCard 
                     title={'Admin'} 
                     link={'#'}
-                    urlAPI={'/'} 
+                    urlAPI={'/admin/panduan/1'} 
                     />
                 </Grid>
                 <Grid xs={12} md={3}>
-                    <VarCard title={'User'} link={'#'}/>
+                    <VarCard 
+                    title={'User'} 
+                    urlAPI={'/admin/panduan/2'}
+                    />
                 </Grid>
                 <Grid xs={12} md={3}>
-                    <VarCard title={'Validator'} link={'#'}/>
+                    <VarCard 
+                    title={'Validator'} 
+                    urlAPI={'/admin/panduan/3'}
+                    />
                 </Grid>
                 <Grid xs={12} md={3}>
-                    <VarCard title={'Public'} link={'#'}/>
+                    <VarCard 
+                    title={'Public'} 
+                    urlAPI={'/admin/panduan/0'}
+                    />
                 </Grid>
             </Grid>
         </Layout>
@@ -49,12 +58,44 @@ export default function Index(props){
 }
 
 
-const VarCard = ({title,link})=>{
-    const ipAPI = '//api.ipify.org?format=json'
+const VarCard = ({title,urlAPI})=>{
+    const [link,setLink] = useState()
+    const [role,setRole] = useState('')
+    const [loading,setIsLoading] = useState(false)
 
-    const inputValue = fetch(ipAPI)
-    .then(response => response.json())
-    .then(data => data.ip)
+    useEffect(()=>{
+      getData()
+      switch (title) {
+            case 'Admin':
+              setRole('1')
+              break;
+            case 'User':
+              setRole('2')
+              break;
+            case 'Validator':
+              setRole('3')
+              break;
+            case 'Public':
+              setRole('0')
+              break;
+          
+            default:
+              break;
+      }
+    },[])
+
+    const getData = async()=>{
+      try {
+        const res = await request({
+          url: urlAPI,
+          method: 'GET'
+        })
+
+        setLink(process.env.REACT_APP_BASE_URL+'/'+res.data.data)
+      } catch (error) {
+        
+      }
+    }
 
     return(
         <Button 
@@ -63,44 +104,47 @@ const VarCard = ({title,link})=>{
         onClick={()=>{
             Swal.fire({
                 title: title,
-                input: 'text',
-                inputAttributes: {
-                  autocapitalize: 'off'
-                },
-                inputLabel: 'Input the file URL based on role below',
-                inputPlaceholder: 'Enter the URL',
+                inputLabel: 'Upload document here',
                 showCancelButton: true,
                 confirmButtonText: 'Update',
-                showLoaderOnConfirm: true,
-                inputValue: inputValue,
-                inputValidator: (value) => {
-                    if (!value) {
-                      return 'You need to write something!'
-                    }
-                  },
-                preConfirm: (login) => {
-                  return fetch(`//api.github.com/users/${login}`)
-                    .then(response => {
-                      if (!response.ok) {
-                        throw new Error(response.statusText)
-                      }
-                      return response.json()
-                    })
-                    .catch(error => {
-                      Swal.showValidationMessage(
-                        `Request failed: ${error}`
-                      )
-                    })
+                input: 'file',
+                inputAttributes: {
+                  'accept': 'file/*',
+                  'aria-label': 'Upload document here'
                 },
+                preConfirm: (login) => {
+                  console.log('login')
+                  console.log(login)
+                  return request({
+                    url: '/admin/panduan/edit/'+role,
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    },
+                    data: {
+                      'role': role,
+                      'document': login
+                    }
+                })
+                .then((res)=>{
+                  Swal.fire(
+                    'Data Updated!',
+                    `You successfully updated a ${title} helper link !`,
+                    'success'
+                  )
+                })
+                .catch((err)=>{
+                  Swal.fire(
+                    'Something Wrong!',
+                    ``,
+                    'error'
+                  )
+                })
+
+                },
+                html:
+                  `<a target="_blank" href='${link}'>See current document</a>`,
                 allowOutsideClick: () => !Swal.isLoading()
-              }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire(
-                        'Data Updated!',
-                        `You successfully updated a ${title} helper link !`,
-                        'success'
-                    )
-                }
               })
         }}
         sx={{ 

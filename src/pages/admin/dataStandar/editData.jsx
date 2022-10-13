@@ -28,6 +28,7 @@ export default function AddDataStandar(){
         deskripsi: '',
         document: ''
     })
+    console.log(state);
     const navigate = useNavigate()
     let { id } = useParams()
     const [searchParams] = useSearchParams();
@@ -38,6 +39,7 @@ export default function AddDataStandar(){
         if (!Cookies.get('accessToken')){
             navigate('/')
         }
+        
         getData()
     },[])
 
