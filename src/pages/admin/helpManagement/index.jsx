@@ -1,7 +1,7 @@
 import Layout from "../../../component/layout/mainLayout";
 
 import Grid from '@mui/material/Unstable_Grid2';
-import {Button,Box,Paper,Typography} from '@mui/material'
+import {Button,Box,Paper,Typography,Skeleton} from '@mui/material'
 import { useEffect, useState } from "react";
 import { request } from "../../../utils/axios-utils";
 import Cookies from "js-cookie";
@@ -61,7 +61,7 @@ export default function Index(props){
 const VarCard = ({title,urlAPI})=>{
     const [link,setLink] = useState()
     const [role,setRole] = useState('')
-    const [loading,setIsLoading] = useState(false)
+    const [isLoading,setIsLoading] = useState(false)
 
     useEffect(()=>{
       getData()
@@ -85,6 +85,7 @@ const VarCard = ({title,urlAPI})=>{
     },[])
 
     const getData = async()=>{
+      setIsLoading(true)
       try {
         const res = await request({
           url: urlAPI,
@@ -95,6 +96,18 @@ const VarCard = ({title,urlAPI})=>{
       } catch (error) {
         
       }
+      finally{
+        setIsLoading(false)
+      }
+    }
+
+    if (isLoading){
+      return(
+        <>
+          <Skeleton variant="rectangular" width={250} height={250} />
+          <Skeleton variant="rounded" width={210} height={60} />
+        </>
+      )
     }
 
     return(
@@ -144,7 +157,6 @@ const VarCard = ({title,urlAPI})=>{
                 },
                 html:
                   `<a target="_blank" href='${link}'>See current document</a>`,
-                allowOutsideClick: () => !Swal.isLoading()
               })
         }}
         sx={{ 
