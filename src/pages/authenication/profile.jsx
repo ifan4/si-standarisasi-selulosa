@@ -18,36 +18,27 @@ import { useNavigate } from "react-router-dom";
 import Button from '@mui/lab/LoadingButton';
 import { convertRole } from "../../helper";
 
-export default function AddDataStandar(){
+export default function Profile(){
     const [state,setState] = useState({
         name: '',
         email: '',
-        // password: '',
         role: ''
     })
     const navigate = useNavigate()
     const [isLoading,setIsLoading] = useState(false)
-    console.log('state nih');
-    console.log(state);
+
 
     useEffect(()=>{
         getProfile()
     },[])
 
-    // const onChangeHandler = (e)=>{
-    //     return setState({
-    //         ...state,
-    //         [e.target.name]: e.target.value
-    //     })
-    // }
+
     const getProfile = async ()=>{
         try {
           const res = await request({
             url: '/profile',
             method: 'get'
           })
-          console.log('res.data profile');
-          console.log(res.data);
           setState({
             name: res.data.name,
             email: res.data.email,

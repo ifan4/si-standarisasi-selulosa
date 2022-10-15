@@ -31,7 +31,7 @@ export default function Index({drawerWidth,handleDrawerToggle,mobileOpen,role='A
 
     useEffect(()=>{
       getLink()
-    },[])
+    },[role])
 
     const getLink = async()=>{
       try {

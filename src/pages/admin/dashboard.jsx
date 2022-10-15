@@ -40,13 +40,10 @@ export default function Index(props){
 
             ])
 
-            console.log('res getData()');
-            console.log(res.data);
             let totalDataValidated = 0,dataNeedValidate=0
             res.data.data.map((item)=>{
                 if (item.validasi_status === '1'){
                     totalDataValidated += 1
-                    console.log(totalDataValidated);
                 }else if(item.validasi_status === '0'){
                     dataNeedValidate += 1
                 }

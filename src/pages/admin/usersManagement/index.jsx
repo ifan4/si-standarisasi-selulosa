@@ -82,8 +82,6 @@ const deleteData = async (id,data,setData)=>{
         let filteredData = data.filter((d)=> {
             return d[4].id !== id && d;
         })
-        console.log('filteredData');
-        console.log(filteredData);
         setData(filteredData)
         
         return Swal.fire(
@@ -145,8 +143,6 @@ export default function DataStandar(){
                 method: 'GET'
             })
 
-            console.log('berhasil');
-            console.log(res.data.data);
 
             setData(
                 res.data.data.map((item)=>{

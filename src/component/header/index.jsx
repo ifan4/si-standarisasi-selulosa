@@ -48,8 +48,6 @@ export default function Index({handleDrawerToggle,title,role}) {
         url: '/profile',
         method: 'get'
       })
-      console.log('res.data profile');
-      console.log(res.data);
       setProfile({
         name: res.data.name,
         role: convertRole(res.data.role)
