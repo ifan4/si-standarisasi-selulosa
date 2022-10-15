@@ -63,8 +63,9 @@ export default function DataByCategory(){
     const navigate = useNavigate()
     const [columns,setColumns] = useState(columns_var)
     const [data,setData] = useState([])
-    const [isLoading,setIsLoading] = useState()
-   
+    const [isLoading,setIsLoading] = useState(true)
+   console.log('isLoading state');
+   console.log(isLoading);
     const [searchParams] = useSearchParams();
     const [category, setCategory] = useState('')
     // Category dibagi menjadi 4, yaitu 
@@ -73,7 +74,7 @@ export default function DataByCategory(){
     // 3. SNI Ekolabel
     // 4.Standar Industri Hijau
 
-    const [role,setRole] = useState('')
+    const [role,setRole] = useState()
     
 
     const options = {
@@ -88,10 +89,11 @@ export default function DataByCategory(){
         checkRole()
     },[])
     useEffect(()=>{   
-        getData()
+        role && getData()
     },[role])
 
     const getData = async()=>{
+        console.log('getdata()');
         setIsLoading(true)
         try {
             const res = await request({
@@ -116,13 +118,13 @@ export default function DataByCategory(){
                     })
                 )
             }
-            
+            return setIsLoading(false)
         } catch (error) {
             console.log(error);
+            return setIsLoading(false)
         }
-        finally{
-            setIsLoading(false)
-        }
+        
+        
     }
 
     const checkRole = async ()=>{
@@ -135,7 +137,6 @@ export default function DataByCategory(){
             setRole('user')
             return true
         } catch (error) {
-            console.log('ini public');
             setColumns(
                 columns.filter((item)=>{
                     return item.name !== 'File Tersedia' && item
@@ -161,7 +162,7 @@ export default function DataByCategory(){
                 >{'< '}Back</Button>
 
                 {
-                    isLoading
+                    isLoading 
                     ?
                     variants.map((variant) => (
                         <Typography 
@@ -172,7 +173,7 @@ export default function DataByCategory(){
                             width: '100%',textAlign:'center', margin: 'auto', fontSize:{xs: '15px', md: '33px'}, fontWeight: 'bold'
                         }}
                         >
-                          {isLoading ? <Skeleton /> : variant}
+                          <Skeleton />
                         </Typography>
                       ))
                     :
