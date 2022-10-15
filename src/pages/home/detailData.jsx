@@ -149,7 +149,7 @@ export default function Detail(){
                             {state.desc}
                         </Typography>
                         <p>
-                            SNI dapat diakses dengan login atau mengakses link  <a href={URLBeli} target={"_blank"}>Pesta BSN atau  SISPK SNI</a>
+                            SNI dapat diakses dengan login atau mengakses link  <a href={URLBeli} target={"_blank"}>rujukan</a>
                         </p>
                         {
                             role == 'user' &&

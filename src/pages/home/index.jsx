@@ -135,7 +135,7 @@ export default function Home(){
                         fontSize: {xs: '12px', md: '20px'}, marginBottom: '12px'
                     }}
                     >
-                        Anda dapat mengakses informasi terbaru data-data SNI produk,  SNI metode uji, SNI ekolabel, dan Standar Industri Hijau yang berlaku di Industri Selulosa.
+                        Anda dapat mengakses informasi mengenai data-data SNI produk,  SNI metode uji, SNI ekolabel, dan Standar Industri Hijau yang berlaku di Industri Selulosa.
                     </Typography>
                     <Divider sx={{ marginY:'2px' }}/>
                     <Divider sx={{ marginY:'2px' }}/>
