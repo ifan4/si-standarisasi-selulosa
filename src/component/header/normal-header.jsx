@@ -14,16 +14,16 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { request } from '../../utils/axios-utils';
 import Cookies from 'js-cookie';
 import { Skeleton } from '@mui/material';
-import axios from 'axios';
 
 const drawerWidth = 240;
 
 
 function DrawerAppBar(props) {
+    const history = useLocation()
     const navigate = useNavigate()  
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -34,8 +34,10 @@ function DrawerAppBar(props) {
     
     React.useEffect(()=>{
         checkRole()
-        getLink()
     },[])
+    React.useEffect(()=>{
+        getLink()
+    },[linkBantuan])
 
     const navItems = [
         {
@@ -55,10 +57,9 @@ function DrawerAppBar(props) {
             const res = await request({
                 url: linkBantuan,
                 method: 'GET'
-            })
+            },role === 'user' && true)
             setFixLink(process.env.REACT_APP_BASE_URL+ '/'+res.data.data)
         } catch (error) {
-            
         }
         finally{
             setIsLoading(false)
@@ -71,7 +72,8 @@ function DrawerAppBar(props) {
 
     const logoutHandler = ()=>{
         Cookies.remove('accessToken')
-        navigate('/')
+        console.log('Berhasil Logout!');
+        return navigate(0)
     }
 
     const checkRole = async ()=>{
@@ -113,7 +115,7 @@ function DrawerAppBar(props) {
                 if (item.label === 'Bantuan'){
                     
                     return(
-                        <a target={'_blank'} href={item.url} style={{ textDecoration: 'none' }} >
+                        <a target={'_blank'} href={fixLink} style={{ textDecoration: 'none' }} >
                             <ListItem key={item.label} disablePadding>
                                 <ListItemButton sx={{ textAlign: 'center' }}>
                                 <ListItemText primary={item.label} />
