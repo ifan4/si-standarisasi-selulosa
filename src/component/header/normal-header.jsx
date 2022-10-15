@@ -28,7 +28,7 @@ function DrawerAppBar(props) {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [role,setRole] = React.useState('public')
-    const [linkBantuan,setLinkBantuan] = React.useState('')
+    const [linkBantuan,setLinkBantuan] = React.useState()
     const [fixLink,setFixLink] = React.useState('')
     const [isLoading,setIsLoading] = React.useState(false)
     
@@ -52,6 +52,7 @@ function DrawerAppBar(props) {
     
 
     const getLink = async()=>{
+        if (!linkBantuan) return 0
         try {
             setIsLoading(true)
             const res = await request({
@@ -141,13 +142,17 @@ function DrawerAppBar(props) {
 
     if (isLoading){
         return(
+            <Box sx={{ display: 'flex',marginBottom:'60px' }}>
                 <AppBar component="nav">
-                    <Box sx={{ flexGrow: 1, display:'flex', alignItems:'center',marginX:'20px', justifyContent:'space-between'}}>
-                        <Skeleton variant="text" sx={{ fontSize: '50px' }} width={500}/>
-              
-                        <Skeleton variant="text" sx={{ fontSize: '50px' }} width={200}/>
-                    </Box>
+                    <Toolbar>
+                        <Box sx={{ flexGrow: 1, display:'flex', alignItems:'center',marginX:'20px', justifyContent:'space-between'}}>
+                            <Skeleton variant="text" sx={{ fontSize: '50px' }} width={500}/>
+                
+                            <Skeleton variant="text" sx={{ fontSize: '50px' }} width={200}/>
+                        </Box>
+                    </Toolbar>
                 </AppBar>
+            </Box>
         )
     }
 
@@ -155,64 +160,64 @@ function DrawerAppBar(props) {
         <Box sx={{ display: 'flex' }}>
         <AppBar component="nav">
             <Toolbar>
-            <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { sm: 'none' } }}
-            >
-                <MenuIcon />
-            </IconButton>
-            
-            <Box sx={{ flexGrow: 1, display:'flex', alignItems:'center'}}>
-                <Grid2 marginRight={'23px'}> 
-                    <img src="../logo-sis.png" alt="" width={'37px'}/>
-                </Grid2>
-                <Grid2>
-                    <Link to={'/'} style={{ color: 'inherit',textDecoration: 'none' }}>
-                        <Typography 
-                        sx={{ 
-                            fontSize:'14px', 
-                            letterSpacing:'2px', 
-                            lineHeight:'18px',
-                            fontWeight:'bold',
-                            color: 'dark'
-                            }}>
-                            SI-STANDARD
-                        </Typography>
-                    </Link>
-                </Grid2>
-            </Box>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                {navItems.map((item) => {
-                    if (item.label == 'Masuk' && role == "user"){
-                        return(
-                            <Button key={item.label} sx={{ color: '#fff' }} onClick={logoutHandler}>
-                                {'logout'}
-                            </Button>
-                        )
-                    }
-                    if (item.label === 'Bantuan'){
-                    
-                        return(
-                            <a target={'_blank'} href={`${item.url}`} style={{ textDecoration: 'none' }} >
-                                <Button key={item.label} sx={{ color: '#fff' }}>
-                                    {item.label}
+                <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    edge="start"
+                    onClick={handleDrawerToggle}
+                    sx={{ mr: 2, display: { sm: 'none' } }}
+                >
+                    <MenuIcon />
+                </IconButton>
+                
+                <Box sx={{ flexGrow: 1, display:'flex', alignItems:'center'}}>
+                    <Grid2 marginRight={'23px'}> 
+                        <img src="../logo-sis.png" alt="" width={'37px'}/>
+                    </Grid2>
+                    <Grid2>
+                        <Link to={'/'} style={{ color: 'inherit',textDecoration: 'none' }}>
+                            <Typography 
+                            sx={{ 
+                                fontSize:'14px', 
+                                letterSpacing:'2px', 
+                                lineHeight:'18px',
+                                fontWeight:'bold',
+                                color: 'dark'
+                                }}>
+                                SI-STANDARD
+                            </Typography>
+                        </Link>
+                    </Grid2>
+                </Box>
+                <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                    {navItems.map((item) => {
+                        if (item.label == 'Masuk' && role == "user"){
+                            return(
+                                <Button key={item.label} sx={{ color: '#fff' }} onClick={logoutHandler}>
+                                    {'logout'}
                                 </Button>
-                            </a>
-                        )
-                    }
+                            )
+                        }
+                        if (item.label === 'Bantuan'){
+                        
+                            return(
+                                <a target={'_blank'} href={`${item.url}`} style={{ textDecoration: 'none' }} >
+                                    <Button key={item.label} sx={{ color: '#fff' }}>
+                                        {item.label}
+                                    </Button>
+                                </a>
+                            )
+                        }
 
-                    
-                    return(
-                    <Link to={item.url} style={{ textDecoration: 'none' }}>
-                        <Button key={item.label} sx={{ color: '#fff' }}>
-                            {item.label}
-                        </Button>
-                    </Link>
-                )})}
-            </Box>
+                        
+                        return(
+                        <Link to={item.url} style={{ textDecoration: 'none' }}>
+                            <Button key={item.label} sx={{ color: '#fff' }}>
+                                {item.label}
+                            </Button>
+                        </Link>
+                    )})}
+                </Box>
             </Toolbar>
         </AppBar>
         <Box component="nav">

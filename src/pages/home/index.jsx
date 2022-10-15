@@ -57,8 +57,6 @@ export default function Home(){
             const res = await request({
                 url: '/count_data'
             }) 
-            console.log('res count');
-            console.log(res);
 
             setCount({
                 "SNI_produk": res.data.data['SNI Produk'] ? res.data.data['SNI Produk'] : 0,
